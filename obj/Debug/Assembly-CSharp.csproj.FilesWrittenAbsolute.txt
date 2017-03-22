@@ -1,0 +1,63 @@
+/Users/huweikai/Nin/Temp/bin/Debug/Assembly-CSharp.dll.mdb
+/Users/huweikai/Nin/Temp/bin/Debug/Assembly-CSharp.dll
+/Users/huweikai/Nin/obj/Debug/Assembly-CSharp.dll
+/Users/huweikai/Nin/obj/Debug/Assembly-CSharp.dll.mdb
+/Users/huweikai/Nin/Temp/bin/Debug/UnityEngine.dll
+/Users/huweikai/Nin/Temp/bin/Debug/UnityEditor.dll
+/Users/huweikai/Nin/Temp/bin/Debug/UnityEngine.UI.dll
+/Users/huweikai/Nin/Temp/bin/Debug/UnityEngine.Networking.dll
+/Users/huweikai/Nin/Temp/bin/Debug/UnityEngine.PlaymodeTestsRunner.dll
+/Users/huweikai/Nin/Temp/bin/Debug/UnityEngine.Analytics.dll
+/Users/huweikai/Nin/Temp/bin/Debug/UnityEngine.HoloLens.dll
+/Users/huweikai/Nin/Temp/bin/Debug/UnityEngine.VR.dll
+/Users/huweikai/Nin/Temp/bin/Debug/Mono.Cecil.dll
+/Users/huweikai/Nin/Temp/bin/Debug/Unity.SerializationLogic.dll
+/Users/huweikai/Nin/Temp/bin/Debug/Unity.DataContract.dll
+/Users/huweikai/Nin/Temp/bin/Debug/ICSharpCode.NRefactory.dll
+/Users/huweikai/Nin/Temp/bin/Debug/Unity.UNetWeaver.dll
+/Users/huweikai/Nin/Temp/bin/Debug/Unity.UNetWeaver.dll.mdb
+/Users/huweikai/Nin/Temp/bin/Debug/Unity.CecilTools.dll
+/Users/huweikai/Nin/Temp/bin/Debug/Mono.Cecil.Pdb.dll
+/Users/huweikai/Nin/Temp/bin/Debug/Mono.Cecil.Mdb.dll
+/Users/Virginia/Downloads/Nin/Temp/bin/Debug/Assembly-CSharp.dll.mdb
+/Users/Virginia/Downloads/Nin/Temp/bin/Debug/Assembly-CSharp.dll
+/Users/Virginia/Downloads/Nin/obj/Debug/Assembly-CSharp.dll
+/Users/Virginia/Downloads/Nin/obj/Debug/Assembly-CSharp.dll.mdb
+/Users/Virginia/Downloads/Nin/Temp/bin/Debug/UnityEngine.dll
+/Users/Virginia/Downloads/Nin/Temp/bin/Debug/UnityEditor.dll
+/Users/Virginia/Downloads/Nin/Temp/bin/Debug/UnityEngine.Analytics.dll
+/Users/Virginia/Downloads/Nin/Temp/bin/Debug/UnityEngine.PlaymodeTestsRunner.dll
+/Users/Virginia/Downloads/Nin/Temp/bin/Debug/UnityEngine.Networking.dll
+/Users/Virginia/Downloads/Nin/Temp/bin/Debug/UnityEngine.UI.dll
+/Users/Virginia/Downloads/Nin/Temp/bin/Debug/UnityEngine.HoloLens.dll
+/Users/Virginia/Downloads/Nin/Temp/bin/Debug/UnityEngine.VR.dll
+/Users/Virginia/Downloads/Nin/Temp/bin/Debug/Mono.Cecil.dll
+/Users/Virginia/Downloads/Nin/Temp/bin/Debug/Unity.SerializationLogic.dll
+/Users/Virginia/Downloads/Nin/Temp/bin/Debug/Unity.DataContract.dll
+/Users/Virginia/Downloads/Nin/Temp/bin/Debug/ICSharpCode.NRefactory.dll
+/Users/Virginia/Downloads/Nin/Temp/bin/Debug/Unity.UNetWeaver.dll
+/Users/Virginia/Downloads/Nin/Temp/bin/Debug/Unity.UNetWeaver.dll.mdb
+/Users/Virginia/Downloads/Nin/Temp/bin/Debug/Unity.CecilTools.dll
+/Users/Virginia/Downloads/Nin/Temp/bin/Debug/Mono.Cecil.Pdb.dll
+/Users/Virginia/Downloads/Nin/Temp/bin/Debug/Mono.Cecil.Mdb.dll
+/Users/weikaihu/Documents/Unity file/Nin/Temp/bin/Debug/Assembly-CSharp.dll.mdb
+/Users/weikaihu/Documents/Unity file/Nin/Temp/bin/Debug/Assembly-CSharp.dll
+/Users/weikaihu/Documents/Unity file/Nin/obj/Debug/Assembly-CSharp.dll
+/Users/weikaihu/Documents/Unity file/Nin/obj/Debug/Assembly-CSharp.dll.mdb
+/Users/weikaihu/Documents/Unity file/Nin/Temp/bin/Debug/UnityEngine.dll
+/Users/weikaihu/Documents/Unity file/Nin/Temp/bin/Debug/UnityEditor.dll
+/Users/weikaihu/Documents/Unity file/Nin/Temp/bin/Debug/UnityEngine.UI.dll
+/Users/weikaihu/Documents/Unity file/Nin/Temp/bin/Debug/UnityEngine.Networking.dll
+/Users/weikaihu/Documents/Unity file/Nin/Temp/bin/Debug/UnityEngine.PlaymodeTestsRunner.dll
+/Users/weikaihu/Documents/Unity file/Nin/Temp/bin/Debug/UnityEngine.Analytics.dll
+/Users/weikaihu/Documents/Unity file/Nin/Temp/bin/Debug/UnityEngine.HoloLens.dll
+/Users/weikaihu/Documents/Unity file/Nin/Temp/bin/Debug/UnityEngine.VR.dll
+/Users/weikaihu/Documents/Unity file/Nin/Temp/bin/Debug/Mono.Cecil.dll
+/Users/weikaihu/Documents/Unity file/Nin/Temp/bin/Debug/Unity.SerializationLogic.dll
+/Users/weikaihu/Documents/Unity file/Nin/Temp/bin/Debug/Unity.DataContract.dll
+/Users/weikaihu/Documents/Unity file/Nin/Temp/bin/Debug/ICSharpCode.NRefactory.dll
+/Users/weikaihu/Documents/Unity file/Nin/Temp/bin/Debug/Unity.UNetWeaver.dll
+/Users/weikaihu/Documents/Unity file/Nin/Temp/bin/Debug/Unity.UNetWeaver.dll.mdb
+/Users/weikaihu/Documents/Unity file/Nin/Temp/bin/Debug/Unity.CecilTools.dll
+/Users/weikaihu/Documents/Unity file/Nin/Temp/bin/Debug/Mono.Cecil.Pdb.dll
+/Users/weikaihu/Documents/Unity file/Nin/Temp/bin/Debug/Mono.Cecil.Mdb.dll
