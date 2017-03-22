@@ -20,7 +20,7 @@ public class BlockGenerator : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		transform.position = transform.position + Time.fixedDeltaTime * speed * Vector3.left;
-		probability = 40f * Mathf.Exp (-Time.fixedTime / 200f) + 60f; 
+		probability = 40f * Mathf.Exp (-Time.fixedTime / 200f) + 40f; 
 		if (transform.position.x < generatingPoint.transform.position.x) {
 			if (Random.value * 100f < probability) {
 				Instantiate (theBlock, transform.position, transform.rotation);
