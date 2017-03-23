@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TargetSelection : MonoBehaviour {
 	public GameObject character;	//character
-	public float period = 5f;		//the swing period of the target (in seconds)
+	public float period = 3f;		//the swing period of the target (in seconds)
 	public bool newTarget;			//true if the target is once disabled and the character hasn't moved to the target's position.
 
 	private GameObject targetEndPoint;	//end point of the character's swing

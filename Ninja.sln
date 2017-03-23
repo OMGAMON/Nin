@@ -1,7 +1,7 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninja", "Assembly-CSharp.csproj", "{AD0A3A54-5668-4890-1B1F-3A207E40D7EE}"
+# Visual Studio 2008
+
+Project("{AFB87B39-3D9C-759E-8A21-8B56D0F895E0}") = "Ninja", "Assembly-CSharp.csproj", "{AD0A3A54-5668-4890-1B1F-3A207E40D7EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
