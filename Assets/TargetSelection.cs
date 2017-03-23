@@ -3,23 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TargetSelection : MonoBehaviour {
-	public GameObject character;
-	public float period = 5f;
-	public bool newTarget;
+	public GameObject character;	//character
+	public float period = 5f;		//the swing period of the target (in seconds)
+	public bool newTarget;			//true if the target is once disabled and the character hasn't moved to the target's position.
 
-	private GameObject targetEndPoint;
-	private Vector3 startingPosition;
-	private Renderer rend;
-	private float chrPath;
-	private CharacterMovement characterMovement;
-	private KeyCode lastKey;
-	private bool targetEnabled;
-	private bool inSameFrame;
+	private GameObject targetEndPoint;	//end point of the character's swing
+	private Vector3 startingPosition;	//mid point of the swing (character's x + 1.1 + 1/2 the distance between end point and character)
+	private Renderer rend;				//target's renderer
+	private float chrPath;				//character's path # (either 1f, 2f, or 3f)
+	private float distance;				//distance between endpoint's x and character's x
+	private CharacterMovement characterMovement;	//for fetching character's path #
+	private KeyCode lastKey;	//the last key hitted
+	private bool targetEnabled; //true when target is enabled to be rendered and moves sinusoidally.
+	private bool inSameFrame;	//true if target is enabled in a specific frame. Prevent triggering disabling target
+
+	//					|----distance (Moving Area) ----|
+	//					|								|
+	//		character	|		startingPosition	targetEndPoint
+	//			|		|				|				|
+	//		===========================(+)=====================
+	//			|
+	//			|
+	//			C 
+	//		===================================================
+	//
+	//		sinusoidal equation: A * sin ( 2 pi / T * t); A is amplitude, T is period in seconds (the time needed for the target to complete 1 swing);
 
 
-	// Use this for initialization
 	void Start () {
-		//character = GameObject.Find ("Character");
+		/*character = GameObject.Find ("Character");*/
 		targetEndPoint = GameObject.Find ("TargetEndPoint");
 		characterMovement = character.GetComponent<CharacterMovement> ();
 		rend = GetComponent<Renderer>();
@@ -28,38 +40,47 @@ public class TargetSelection : MonoBehaviour {
 	}
 
 	void Update () {
-		inSameFrame = false;
 		chrPath = characterMovement.path;
-		if (Input.GetKeyDown(KeyCode.Q) && (!targetEnabled || !Input.GetKeyDown(lastKey)) && chrPath != 1) {
-			startingPosition = new Vector3 (character.transform.position.x + 1.1f + 0.5f * (targetEndPoint.transform.position.x - character.transform.position.x - 1.1f), 1.355f, 5f);
+		distance = targetEndPoint.transform.position.x - character.transform.position.x;
+
+		if (Input.GetKeyDown(KeyCode.Q) && (!targetEnabled || !Input.GetKeyDown(lastKey)) && chrPath != 1) { 
+			//key hitted is Q, and path is not 1, and either target is enabled or the key hitted just now is not the same as lastkey
+			startingPosition = new Vector3 (character.transform.position.x + 1.1f + 0.5f * (distance - 1.1f), 1.355f, 5f);
 			SetPosition ();
 			lastKey = KeyCode.Q;
 		} else if (Input.GetKeyDown(KeyCode.A) && (!targetEnabled || !Input.GetKeyDown(lastKey)) && chrPath != 2) {
-			startingPosition = new Vector3 (character.transform.position.x + 1.1f + 0.5f * (targetEndPoint.transform.position.x - character.transform.position.x - 1.1f), 0f, 5f);
+			//key hitted is A, and path is not 2, and either target is enabled or the key hitted just now is not the same as lastkey
+			startingPosition = new Vector3 (character.transform.position.x + 1.1f + 0.5f * (distance - 1.1f), 0f, 5f);
 			SetPosition ();
 			lastKey = KeyCode.A;
 		} else if (Input.GetKeyDown (KeyCode.Z) && (!targetEnabled || !Input.GetKeyDown(lastKey)) && chrPath != 3) {
-			startingPosition = new Vector3 (character.transform.position.x + 1.1f + 0.5f * (targetEndPoint.transform.position.x - character.transform.position.x - 1.1f), -1.256f, 5f);
+			//key hitted is Z, and path is not 3, and either target is enabled or the key hitted just now is not the same as lastkey
+			startingPosition = new Vector3 (character.transform.position.x + 1.1f + 0.5f * (distance - 1.1f), -1.256f, 5f);
 			SetPosition ();
 			lastKey = KeyCode.Z;
 		}
 			
 		if (targetEnabled) {
+			//enabling the target renderer and start moving the target
 			rend.enabled = true;
-			startingPosition = new Vector3 (character.transform.position.x + 1.1f + 0.5f * (targetEndPoint.transform.position.x - character.transform.position.x - 1.1f), startingPosition.y, 5f);
-			transform.position = 0.5f * (targetEndPoint.transform.position.x - character.transform.position.x - 1.1f) * Mathf.Sin (2f / period * Mathf.PI * Time.time - Mathf.PI / 2f) * Vector3.right + startingPosition;
+			startingPosition = new Vector3 (character.transform.position.x + 1.1f + 0.5f * (distance - 1.1f), startingPosition.y, 5f); //reset mid point due to character's move
+			transform.position = 0.5f * (distance - 1.1f) * Mathf.Sin (2f / period * Mathf.PI * Time.time - Mathf.PI / 2f) * Vector3.right + startingPosition;
 		}
 			
-		//print (inSameFrame);
+		/*print (inSameFrame);*/
 
 		if ((Input.GetKeyDown(lastKey) && targetEnabled) && !inSameFrame) {
+			//the key hitted just now is the same the last key, and the target is enabled, it is not in the same frame with enabling target
 			targetEnabled = false;
 			rend.enabled = false;
 			print ("targetEnabled = false");
 			newTarget = true;
 		}
+
+		inSameFrame = false;
 	}
 
+	//set the target's position to the starting position, enable the target, and set inSameFrame to true so that disabling target cannot happen in the current frame
 	void SetPosition() {
 		transform.position = startingPosition;
 		targetEnabled = true;

@@ -5,15 +5,13 @@ using UnityEngine;
 public class BlockDestroyer : MonoBehaviour {
 	public GameObject destructionPoint;
 
-
-	// Use this for initialization
 	void Start () {
-		destructionPoint = GameObject.Find ("DestroyingPoint");
+		destructionPoint = GameObject.Find ("DestroyingPoint");	//fetch destruction point
 	}
-	
-	// Update is called once per frame
+
 	void FixedUpdate () {
 		if (transform.position.x < destructionPoint.transform.position.x) {
+			//destroy this block when it travels over the destruction point
 			Destroy (gameObject);		
 		}
 		
