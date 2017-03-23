@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour {
 	public float path;
-	// Use this for initialization
+
+	private GameObject target;
+	private GameObject steadyPoint;
+	private TargetSelection targetSelection;
 
 	void Start () {
-		
+		target = GameObject.Find ("Target");
+		steadyPoint = GameObject.Find ("SteadyPoint");
+		targetSelection = target.GetComponent<TargetSelection> ();
 	}
 	
 	// Update is called once per frame
@@ -18,6 +23,15 @@ public class CharacterMovement : MonoBehaviour {
 			path = 2f;
 		} else if (transform.position.y < -1.0f && transform.position.y > -1.4f) {
 			path = 3f;
+		}
+
+		if (targetSelection.newTarget) {
+			transform.position = target.transform.position;
+			targetSelection.newTarget = false;
+		}
+
+		if (transform.position.x > steadyPoint.transform.position.x) {
+			transform.position = transform.position + 0.2f * Vector3.left * (transform.position.x - steadyPoint.transform.position.x) * Time.fixedDeltaTime;
 		}
 	}
 }

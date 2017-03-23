@@ -5,16 +5,15 @@ using UnityEngine;
 public class TargetSelection : MonoBehaviour {
 	public GameObject character;
 	public float period = 5f;
-	//public float speed = 1.5f;
+	public bool newTarget;
+
 	private Vector3 startingPosition;
-	private Vector3 endingPosition;
 	private Renderer rend;
 	private float chrPath;
 	private CharacterMovement characterMovement;
-
-	public KeyCode lastKey;
-	public bool targetEnabled;
-	public bool inSameFrame;
+	private KeyCode lastKey;
+	private bool targetEnabled;
+	private bool inSameFrame;
 
 
 	// Use this for initialization
@@ -25,6 +24,7 @@ public class TargetSelection : MonoBehaviour {
 		characterMovement = character.GetComponent<CharacterMovement> ();
 		rend = GetComponent<Renderer>();
 		rend.enabled = false;
+		newTarget = false;
 	}
 
 	void Update () {
@@ -32,28 +32,16 @@ public class TargetSelection : MonoBehaviour {
 		chrPath = characterMovement.path;
 		if (Input.GetKeyDown(KeyCode.Q) && (!targetEnabled || !Input.GetKeyDown(lastKey)) && chrPath != 1) {
 			startingPosition = new Vector3 (character.transform.position.x + 2.835f, 1.355f, 5f);
-			transform.position = startingPosition;
-			targetEnabled = true;
-			inSameFrame = true;
+			SetPosition ();
 			lastKey = KeyCode.Q;
-			print ("targetEnabled = true");
-			print ("inSameFrame = true");
 		} else if (Input.GetKeyDown(KeyCode.A) && (!targetEnabled || !Input.GetKeyDown(lastKey)) && chrPath != 2) {
 			startingPosition = new Vector3 (character.transform.position.x + 2.835f, 0f, 5f);
-			transform.position = startingPosition;
-			targetEnabled = true;
-			inSameFrame = true;
+			SetPosition ();
 			lastKey = KeyCode.A;
-			print ("targetEnabled = true");
-			print ("inSameFrame = true");
 		} else if (Input.GetKeyDown (KeyCode.Z) && (!targetEnabled || !Input.GetKeyDown(lastKey)) && chrPath != 3) {
 			startingPosition = new Vector3 (character.transform.position.x + 2.835f, -1.256f, 5f);
-			transform.position = startingPosition;
-			targetEnabled = true;
-			inSameFrame = true;
+			SetPosition ();
 			lastKey = KeyCode.Z;
-			print ("targetEnabled = true");
-			print ("inSameFrame = true");
 		}
 			
 		if (targetEnabled) {
@@ -67,6 +55,13 @@ public class TargetSelection : MonoBehaviour {
 			targetEnabled = false;
 			rend.enabled = false;
 			print ("targetEnabled = false");
+			newTarget = true;
 		}
+	}
+
+	void SetPosition() {
+		transform.position = startingPosition;
+		targetEnabled = true;
+		inSameFrame = true;
 	}
 }
