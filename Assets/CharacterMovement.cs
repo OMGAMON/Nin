@@ -3,46 +3,76 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour {
-	public float path;	//path number (1f represents the top lane, 2f is the middle lane, 3f is the bottom lane)
+	public int path;	//path number (1 represents the top lane, 2 is the middle lane, 3 is the bottom lane)
+	public float[,] lane = new float[2,3]{{1.3f, -0.1f, -1.3f},{1.5f, 0.1f, -1.1f}}; //i: 1 = min, 2 = max; j: 1,2,3 corresponding lane;
 	public float blockSpeed;
+	public float force = 20f;
+
 	private float distance;
 	private GameObject target;				//target	
 	private GameObject steadyPoint;			//the ultimate (time approach infinity) x position where the character would be after changing position
 	private TargetSelection targetSelection;//for fetching whether the target is a new target
+	private GameObject destinationPoint;
+	private int targetPath;
+	private BoxCollider2D col;
+	private Rigidbody2D rb;
+	private Vector3 offset;
 
 	void Start () {
 		target = GameObject.Find ("Target");
 		steadyPoint = GameObject.Find ("SteadyPoint");
+		destinationPoint = GameObject.Find ("DestinationPoint");
 		targetSelection = target.GetComponent<TargetSelection> ();
+		rb = GetComponent<Rigidbody2D> ();
+		col = GetComponent<BoxCollider2D> ();
 	}
 
 	void FixedUpdate () {
-		if (transform.position.y < 1.6f && transform.position.y > 1.2f) {
-			//lane 1 is when 1.2f < y < 1.6f
-			path = 1f;
-		} else if (transform.position.y < 0.2f && transform.position.y > -0.2f) {
-			//lane 2 is when -0.2f < y < 0.2f
-			path = 2f;
-		} else if (transform.position.y < -1.0f && transform.position.y > -1.4f) {
-			//lane 3 is when -1.4f < y < 1.0f
-			path = 3f;
-		}
+		path = Lane (transform);
 
 		if (targetSelection.newTarget) {
 			//the target is a new target (not transformed yet)
-			transform.position = target.transform.position;
+			targetPath = Lane (target.transform);
+			print (targetPath);
+
+			col.enabled = false;
+			rb.bodyType = RigidbodyType2D.Kinematic;
+
+			offset = Vector3.Normalize(destinationPoint.transform.position - transform.position);
+			print (offset);
 			targetSelection.newTarget = false; //set the newTarget to false so that the character would only be transform to new position one time.
+		}
+
+		if (Lane (transform) != targetPath && !col.enabled) {
+			
+			transform.position = transform.position + (offset) * 7.0f * Time.fixedDeltaTime;
+		} else if (Lane(transform) == targetPath && !col.enabled) { //Destroy (spring);
+			col.enabled = true;
+			rb.bodyType = RigidbodyType2D.Dynamic;
 			distance = transform.position.x - steadyPoint.transform.position.x;
 		}
 
-
-		if (transform.position.x > steadyPoint.transform.position.x) {
+		if (transform.position.x != steadyPoint.transform.position.x && col.enabled) {
 			blockSpeed = 5.3f * (1 - Mathf.Exp (-Time.fixedTime / 100f)) + 0.7f; 
-			transform.position = transform.position + Time.fixedDeltaTime * (blockSpeed / distance + 0.2f) * (transform.position.x - steadyPoint.transform.position.x) * Vector3.left;
-
+			transform.position = transform.position + Time.fixedDeltaTime * (blockSpeed / distance + 0.1f) * (transform.position.x - steadyPoint.transform.position.x) * Vector3.left;
 			// x' = x - vt, where v = x - steadyPoint;  (creates an effect of exponentially slowing down, and let the character approach steadyPoint)
 			// 0.15f is the max for the character not backing on blocks. 0.7f = transform.position.x - steadyPoint.transform.position.x * 0.15f
 			// 0.7f is the block speed.
 		}
 	}
+
+	int Lane (Transform t) {
+		if (t.position.y < lane [1,0] && t.position.y > lane [0,0]) {
+			//lane 1 is when 1.2f < y < 1.6f
+			return 1;
+		} else if (t.position.y < lane [1,1] && t.position.y > lane [0,1]) {
+			//lane 2 is when -0.2f < y < 0.2f
+			return 2;
+		} else if (t.position.y < lane [1,2] && t.position.y > lane [0,2]) {
+			//lane 3 is when -1.4f < y < -1.0f
+			return 3;
+		} else
+			return 0;
+	}
+
 }
