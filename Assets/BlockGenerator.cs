@@ -5,7 +5,7 @@ using UnityEngine;
 public class BlockGenerator : MonoBehaviour {
 	public GameObject theBlock;
 	public Transform generatingPoint;
-	public float speed = 0.7f;
+	public float speed;
 
 	private float blockWidth;	
 	public float probability;	//probability of generating a block
@@ -17,15 +17,16 @@ public class BlockGenerator : MonoBehaviour {
 	}
 	
 	void FixedUpdate () {
+		speed = 5.3f * (1 - Mathf.Exp (-Time.fixedTime / 100f)) + 0.7f; 
 		transform.position = transform.position + Time.fixedDeltaTime * speed * Vector3.left; //allow generator to move to the left with the same speed of other blocks
-		probability = 40f * Mathf.Exp (-Time.fixedTime / 200f) + 40f; 
+		probability = 40f * Mathf.Exp (-Time.fixedTime / 200f) + 60f; 
 		//model: A * e ^ (-t / T) + B;	when time = 0, probability = A + B; when t = T, probability = 0.37A + B;
 		if (transform.position.x < generatingPoint.transform.position.x) {
 			if (Random.value * 100f < probability) {
 				//generate a block when the random value is less than probability
 				Instantiate (theBlock, transform.position, transform.rotation);
 			}
-			transform.position = new Vector3 (transform.position.x + blockWidth, transform.position.y, transform.position.z); //place the generator back a distance of a blockwidth
+			transform.position = new Vector3 (transform.position.x + blockWidth + 0.19f, transform.position.y, transform.position.z); //place the generator back a distance of a blockwidth
 
 		}
 	}

@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class TargetSelection : MonoBehaviour {
 	public GameObject character;	//character
-	public float period = 5f;		//the swing period of the target (in seconds)
+	public float period = 3f;		//the swing period of the target (in seconds)
 	public bool newTarget;			//true if the target is once disabled and the character hasn't moved to the target's position.
 
 	private GameObject targetEndPoint;	//end point of the character's swing
 	private Vector3 startingPosition;	//mid point of the swing (character's x + 1.1 + 1/2 the distance between end point and character)
 	private Renderer rend;				//target's renderer
-	private float chrPath;				//character's path # (either 1f, 2f, or 3f)
+	private int chrPath;				//character's path # (either 1f, 2f, or 3f)
 	private float distance;				//distance between endpoint's x and character's x
 	private CharacterMovement characterMovement;	//for fetching character's path #
 	private KeyCode lastKey;	//the last key hitted
@@ -60,6 +60,11 @@ public class TargetSelection : MonoBehaviour {
 			lastKey = KeyCode.Z;
 		}
 			
+		if (chrPath == 0) {
+			targetEnabled = false;
+			rend.enabled = false;
+		}
+
 		if (targetEnabled) {
 			//enabling the target renderer and start moving the target
 			rend.enabled = true;
