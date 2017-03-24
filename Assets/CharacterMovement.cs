@@ -21,8 +21,12 @@ public class CharacterMovement : MonoBehaviour {
 	private Vector3 offset;
 	private Light lt;
 	private bool leave;
+	private GameObject staticBlock;
+	private StaticBlockMovement staticBlockScript;
 
 	void Start () {
+		staticBlock = GameObject.Find ("static block");
+		staticBlockScript = staticBlock.GetComponent<StaticBlockMovement> ();
 		target = GameObject.Find ("Target");
 		steadyPoint = GameObject.Find ("SteadyPoint");
 		destinationPoint = GameObject.Find ("DestinationPoint");
@@ -59,7 +63,7 @@ public class CharacterMovement : MonoBehaviour {
 		}
 
 		if (transform.position.x != steadyPoint.transform.position.x && col.enabled) {
-			blockSpeed = 5.3f * (1 - Mathf.Exp (-Time.fixedTime / 100f)) + 0.7f; 
+			blockSpeed = staticBlockScript.blockSpeed;
 			transform.position = transform.position + Time.fixedDeltaTime * (blockSpeed / distance + 0.02f) * (transform.position.x - steadyPoint.transform.position.x) * Vector3.left;
 			// x' = x - vt, where v = x - steadyPoint;  (creates an effect of exponentially slowing down, and let the character approach steadyPoint)
 			// 0.15f is the max for the character not backing on blocks. 0.7f = transform.position.x - steadyPoint.transform.position.x * 0.15f

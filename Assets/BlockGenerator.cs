@@ -11,9 +11,12 @@ public class BlockGenerator : MonoBehaviour {
 
 	private float blockWidth;	
 	public float probability;	//probability of generating a block
-
+	private GameObject staticBlock;
+	private StaticBlockMovement staticBlockScript;
 
 	void Start () {
+		staticBlock = GameObject.Find ("static block");
+		staticBlockScript = staticBlock.GetComponent<StaticBlockMovement> ();
 		blockWidth = theBlock.GetComponent<BoxCollider2D> ().size.x;	//fetch block's width
 		probability = 100f;
 		minProbability = 40f;
@@ -21,7 +24,7 @@ public class BlockGenerator : MonoBehaviour {
 	}
 	
 	void FixedUpdate () {
-		speed = 5.3f * (1 - Mathf.Exp (-Time.fixedTime / 100f)) + 0.7f; 
+		speed = staticBlockScript.blockSpeed;
 		transform.position = transform.position + Time.fixedDeltaTime * speed * Vector3.left; //allow generator to move to the left with the same speed of other blocks
 		probability = (maxProbability - minProbability) * Mathf.Exp (-Time.fixedTime / 200f) + minProbability; 
 		//model: A * e ^ (-t / T) + B;	when time = 0, probability = A + B; when t = T, probability = 0.37A + B;
