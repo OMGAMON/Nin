@@ -50,6 +50,8 @@
      <Compile Include="Assets\BlockDestroyer.cs" />
      <Compile Include="Assets\BlockGenerator.cs" />
      <Compile Include="Assets\CharacterMovement.cs" />
+     <Compile Include="Assets\DestinationMovement.cs" />
+     <Compile Include="Assets\RopeEndMovement.cs" />
      <Compile Include="Assets\StaticBlockMovement.cs" />
      <Compile Include="Assets\TargetSelection.cs" />
      <Compile Include="Assets\blockMovement.cs" />

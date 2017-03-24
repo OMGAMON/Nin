@@ -11,40 +11,44 @@ public class CharacterMovement : MonoBehaviour {
 	private float distance;
 	private GameObject target;				//target	
 	private GameObject steadyPoint;			//the ultimate (time approach infinity) x position where the character would be after changing position
-	private TargetSelection targetSelection;//for fetching whether the target is a new target
+	//private TargetSelection targetSelection;//for fetching whether the target is a new target
 	private GameObject destinationPoint;
+	private GameObject ropeEnd;
+	private RopeEndMovement ropeScript;
 	private int targetPath;
 	private BoxCollider2D col;
 	private Rigidbody2D rb;
 	private Vector3 offset;
+	private Light lt;
 
 	void Start () {
 		target = GameObject.Find ("Target");
 		steadyPoint = GameObject.Find ("SteadyPoint");
 		destinationPoint = GameObject.Find ("DestinationPoint");
-		targetSelection = target.GetComponent<TargetSelection> ();
+		ropeEnd = GameObject.Find ("RopeEndA");
+		ropeScript = ropeEnd.GetComponent<RopeEndMovement> ();
+		//targetSelection = target.GetComponent<TargetSelection> ();
 		rb = GetComponent<Rigidbody2D> ();
 		col = GetComponent<BoxCollider2D> ();
+		lt = GetComponent<Light> ();
+
 	}
 
 	void FixedUpdate () {
 		path = Lane (transform);
 
-		if (targetSelection.newTarget) {
+		if (ropeScript.ropeReached) {
 			//the target is a new target (not transformed yet)
 			targetPath = Lane (target.transform);
-			print (targetPath);
 
 			col.enabled = false;
 			rb.bodyType = RigidbodyType2D.Kinematic;
 
-			offset = Vector3.Normalize(destinationPoint.transform.position - transform.position);
-			print (offset);
-			targetSelection.newTarget = false; //set the newTarget to false so that the character would only be transform to new position one time.
+			ropeScript.ropeReached = false; //set the newTarget to false so that the character would only be transform to new position one time.
 		}
 
 		if (Lane (transform) != targetPath && !col.enabled) {
-			
+			offset = Vector3.Normalize(destinationPoint.transform.position - transform.position);
 			transform.position = transform.position + (offset) * 7.0f * Time.fixedDeltaTime;
 		} else if (Lane(transform) == targetPath && !col.enabled) { //Destroy (spring);
 			col.enabled = true;
@@ -59,6 +63,8 @@ public class CharacterMovement : MonoBehaviour {
 			// 0.15f is the max for the character not backing on blocks. 0.7f = transform.position.x - steadyPoint.transform.position.x * 0.15f
 			// 0.7f is the block speed.
 		}
+
+		lt.intensity = 0.15f * Mathf.Sin (2f * Mathf.PI * Time.time) + 0.15f;
 	}
 
 	int Lane (Transform t) {
