@@ -21,6 +21,7 @@ public class RopeEndMovement : MonoBehaviour {
 		characterCol = character.GetComponent<BoxCollider2D> ();
 		target = GameObject.Find ("Target");
 		targetScript = target.GetComponent<TargetSelection> ();
+		destination = GameObject.Find ("DestinationPoint");
 		ropeReached = false;
 		
 	}
@@ -50,6 +51,9 @@ public class RopeEndMovement : MonoBehaviour {
 		if(!ropeEjected){
 			transform.position = character.transform.position;
 		} else { //change rope distance;
+			if (ropeReached) {
+				transform.position = destination.transform.position;
+			}
 			rope.SetPosition (1, transform.position + Vector3.back * 0.1f);
 			rope.SetPosition (0, character.transform.position + Vector3.back * 0.1f + Vector3.up * 0.17f);
 		}

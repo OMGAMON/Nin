@@ -20,6 +20,7 @@ public class CharacterMovement : MonoBehaviour {
 	private Rigidbody2D rb;
 	private Vector3 offset;
 	private Light lt;
+	private bool leave;
 
 	void Start () {
 		target = GameObject.Find ("Target");
@@ -37,14 +38,14 @@ public class CharacterMovement : MonoBehaviour {
 	void FixedUpdate () {
 		path = Lane (transform);
 
-		if (ropeScript.ropeReached) {
+		if (ropeScript.ropeReached && !leave) {
 			//the target is a new target (not transformed yet)
 			targetPath = Lane (target.transform);
 
 			col.enabled = false;
 			rb.bodyType = RigidbodyType2D.Kinematic;
 
-			ropeScript.ropeReached = false; //set the newTarget to false so that the character would only be transform to new position one time.
+			leave = true; //set leave to true so that the character would only be transform to new position one time.
 		}
 
 		if (Lane (transform) != targetPath && !col.enabled) {
@@ -54,17 +55,18 @@ public class CharacterMovement : MonoBehaviour {
 			col.enabled = true;
 			rb.bodyType = RigidbodyType2D.Dynamic;
 			distance = transform.position.x - steadyPoint.transform.position.x;
+			leave = false;
 		}
 
 		if (transform.position.x != steadyPoint.transform.position.x && col.enabled) {
 			blockSpeed = 5.3f * (1 - Mathf.Exp (-Time.fixedTime / 100f)) + 0.7f; 
-			transform.position = transform.position + Time.fixedDeltaTime * (blockSpeed / distance + 0.1f) * (transform.position.x - steadyPoint.transform.position.x) * Vector3.left;
+			transform.position = transform.position + Time.fixedDeltaTime * (blockSpeed / distance + 0.02f) * (transform.position.x - steadyPoint.transform.position.x) * Vector3.left;
 			// x' = x - vt, where v = x - steadyPoint;  (creates an effect of exponentially slowing down, and let the character approach steadyPoint)
 			// 0.15f is the max for the character not backing on blocks. 0.7f = transform.position.x - steadyPoint.transform.position.x * 0.15f
 			// 0.7f is the block speed.
 		}
 
-		lt.intensity = 0.15f * Mathf.Sin (2f * Mathf.PI * Time.time) + 0.15f;
+		lt.intensity = 0.15f * Mathf.Sin (2f * Mathf.PI * Time.time) + 0.25f;// light
 	}
 
 	int Lane (Transform t) {
