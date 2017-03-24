@@ -6,6 +6,9 @@ public class TargetSelection : MonoBehaviour {
 	public GameObject character;	//character
 	public float period;		//the swing period of the target (in seconds)
 	public bool newTarget;			//true if the target is once disabled and the character hasn't moved to the target's position.
+	public KeyCode lane1;
+	public KeyCode lane2;
+	public KeyCode lane3;
 
 	private GameObject targetEndPoint;	//end point of the character's swing
 	private Vector3 startingPosition;	//mid point of the swing (character's x + 1.1 + 1/2 the distance between end point and character)
@@ -35,7 +38,7 @@ public class TargetSelection : MonoBehaviour {
 		targetEndPoint = GameObject.Find ("TargetEndPoint");
 		characterMovement = character.GetComponent<CharacterMovement> ();
 		rend = GetComponent<Renderer>();
-		period = 1.5f;
+		period = 1;
 		rend.enabled = false;
 		newTarget = false;
 	}
@@ -44,21 +47,21 @@ public class TargetSelection : MonoBehaviour {
 		chrPath = characterMovement.path;
 		distance = targetEndPoint.transform.position.x - character.transform.position.x;
 
-		if (Input.GetKeyDown(KeyCode.Q) && (!targetEnabled || !Input.GetKeyDown(lastKey)) && chrPath != 1) { 
+		if (Input.GetKeyDown(lane1) && (!targetEnabled || !Input.GetKeyDown(lastKey)) && chrPath != 1) { 
 			//key hitted is Q, and path is not 1, and either target is enabled or the key hitted just now is not the same as lastkey
 			startingPosition = new Vector3 (character.transform.position.x + 1.1f + 0.5f * (distance - 1.1f), 1.355f, 5f);
 			SetPosition ();
-			lastKey = KeyCode.Q;
-		} else if (Input.GetKeyDown(KeyCode.A) && (!targetEnabled || !Input.GetKeyDown(lastKey)) && chrPath != 2) {
+			lastKey = lane1;
+		} else if (Input.GetKeyDown(lane2) && (!targetEnabled || !Input.GetKeyDown(lastKey)) && chrPath != 2) {
 			//key hitted is A, and path is not 2, and either target is enabled or the key hitted just now is not the same as lastkey
 			startingPosition = new Vector3 (character.transform.position.x + 1.1f + 0.5f * (distance - 1.1f), 0f, 5f);
 			SetPosition ();
-			lastKey = KeyCode.A;
-		} else if (Input.GetKeyDown (KeyCode.Z) && (!targetEnabled || !Input.GetKeyDown(lastKey)) && chrPath != 3) {
+			lastKey = lane2;
+		} else if (Input.GetKeyDown (lane3) && (!targetEnabled || !Input.GetKeyDown(lastKey)) && chrPath != 3) {
 			//key hitted is Z, and path is not 3, and either target is enabled or the key hitted just now is not the same as lastkey
 			startingPosition = new Vector3 (character.transform.position.x + 1.1f + 0.5f * (distance - 1.1f), -1.256f, 5f);
 			SetPosition ();
-			lastKey = KeyCode.Z;
+			lastKey = lane3;
 		}
 			
 		if (chrPath == 0) {
@@ -79,7 +82,6 @@ public class TargetSelection : MonoBehaviour {
 			//the key hitted just now is the same the last key, and the target is enabled, it is not in the same frame with enabling target
 			targetEnabled = false;
 			rend.enabled = false;
-			print ("targetEnabled = false");
 			newTarget = true;
 		}
 

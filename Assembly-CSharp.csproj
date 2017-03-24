@@ -51,6 +51,8 @@
      <Compile Include="Assets\BlockGenerator.cs" />
      <Compile Include="Assets\CharacterMovement.cs" />
      <Compile Include="Assets\DestinationMovement.cs" />
+     <Compile Include="Assets\Judge.cs" />
+     <Compile Include="Assets\MenuCtrl.cs" />
      <Compile Include="Assets\RopeEndMovement.cs" />
      <Compile Include="Assets\StaticBlockMovement.cs" />
      <Compile Include="Assets\TargetSelection.cs" />

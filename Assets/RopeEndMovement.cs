@@ -8,20 +8,20 @@ public class RopeEndMovement : MonoBehaviour {
 	public bool ropeEjected;
 	public Material mt;
 
-	private GameObject character;
+	public GameObject character;
 	private BoxCollider2D characterCol;
-	private GameObject target;
+	public GameObject target;
 	private TargetSelection targetScript;
-	private GameObject destination;
+	public GameObject destination;
 	private Vector3 direction;
 	private LineRenderer rope;
 
 	void Start () {
-		character = GameObject.Find ("Character");
+		//character = GameObject.Find ("Character");
 		characterCol = character.GetComponent<BoxCollider2D> ();
-		target = GameObject.Find ("Target");
+		//target = GameObject.Find ("Target");
 		targetScript = target.GetComponent<TargetSelection> ();
-		destination = GameObject.Find ("DestinationPoint");
+		//destination = GameObject.Find ("DestinationPoint");
 		ropeReached = false;
 		
 	}

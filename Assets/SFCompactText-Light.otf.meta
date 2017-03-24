@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 22c508870528c4d71aa35e15321101e5
+timeCreated: 1490396371
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: .SF Compact Text
+  fontNames:
+  - .SF Compact Text
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

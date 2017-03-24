@@ -3,23 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DestinationMovement : MonoBehaviour {
-	private GameObject target;
-	private GameObject character;
+	public GameObject target;
+	public GameObject character;
+
 	private BoxCollider2D characterCol;
 	private float blockSpeed;
+	private StaticBlockMovement staticBlockScript;
 
 	// Use this for initialization
 	void Start () {
-		target = GameObject.Find ("Target");
-		character = GameObject.Find ("Character");
+		//target = GameObject.Find ("Target");
+		//character = GameObject.Find ("Character");
 		characterCol = character.GetComponent<BoxCollider2D> ();
+		staticBlockScript = GameObject.Find ("static block").GetComponent<StaticBlockMovement>() ;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 		if (!characterCol.enabled) {
-			blockSpeed = 5.3f * (1 - Mathf.Exp (-Time.fixedTime / 100f)) + 0.7f; 
+			blockSpeed = staticBlockScript.blockSpeed; 
 			transform.position = transform.position + Time.fixedDeltaTime * blockSpeed * Vector3.left; //x' = x + vt
 			print("newTarget = true");
 		} else {

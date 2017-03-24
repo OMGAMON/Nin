@@ -7,13 +7,14 @@ public class CharacterMovement : MonoBehaviour {
 	public float[,] lane = new float[2,3]{{1.3f, -0.1f, -1.3f},{1.5f, 0.1f, -1.1f}}; //i: 1 = min, 2 = max; j: 1,2,3 corresponding lane;
 	public float blockSpeed;
 	public float force = 20f;
+	//public float time;
 
 	private float distance;
-	private GameObject target;				//target	
+	public GameObject target;				//target	
 	private GameObject steadyPoint;			//the ultimate (time approach infinity) x position where the character would be after changing position
 	//private TargetSelection targetSelection;//for fetching whether the target is a new target
-	private GameObject destinationPoint;
-	private GameObject ropeEnd;
+	public GameObject destinationPoint;
+	public GameObject ropeEnd;
 	private RopeEndMovement ropeScript;
 	private int targetPath;
 	private BoxCollider2D col;
@@ -25,12 +26,11 @@ public class CharacterMovement : MonoBehaviour {
 	private StaticBlockMovement staticBlockScript;
 
 	void Start () {
+		//time = Time.timeSinceLevelLoad;
 		staticBlock = GameObject.Find ("static block");
 		staticBlockScript = staticBlock.GetComponent<StaticBlockMovement> ();
-		target = GameObject.Find ("Target");
 		steadyPoint = GameObject.Find ("SteadyPoint");
-		destinationPoint = GameObject.Find ("DestinationPoint");
-		ropeEnd = GameObject.Find ("RopeEndA");
+		//destinationPoint = GameObject.Find ("DestinationPoint");
 		ropeScript = ropeEnd.GetComponent<RopeEndMovement> ();
 		//targetSelection = target.GetComponent<TargetSelection> ();
 		rb = GetComponent<Rigidbody2D> ();

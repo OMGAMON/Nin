@@ -5,13 +5,18 @@ using UnityEngine;
 public class StaticBlockMovement : MonoBehaviour {
 	private Vector3 startingPosition;
 	public float blockSpeed;
+	public float time;
+	private BG_Scrolling backgroundScript;
 
 	void Start () {
 		startingPosition = transform.position;
+		backgroundScript = GameObject.Find ("Backgrounds").GetComponent<BG_Scrolling>();
 	}
 
 	void FixedUpdate () {
-		blockSpeed = 5.3f * (1 - Mathf.Exp (-Time.fixedTime / 100f)) + 0.7f;
+		time = backgroundScript.time;
+		blockSpeed = 5.3f * (1 - Mathf.Exp (-(Time.time - time) / 100f)) + 0.7f;
+		print (Time.time - time);
 		transform.position = transform.position + Time.fixedDeltaTime * blockSpeed * Vector3.left;
 		if (transform.position.x < startingPosition.x - 12) {
 			//ensures that after traveling 12 units to left, such sample block goes back to the original position
