@@ -9,7 +9,7 @@ public class CharacterMovement : MonoBehaviour {
 	public float force = 20f;
 
 	private float distance;
-	private GameObject target;				//target	
+	public GameObject target;				//target	
 	private GameObject steadyPoint;			//the ultimate (time approach infinity) x position where the character would be after changing position
 	//private TargetSelection targetSelection;//for fetching whether the target is a new target
 	private GameObject destinationPoint;
@@ -23,7 +23,6 @@ public class CharacterMovement : MonoBehaviour {
 	private bool leave;
 
 	void Start () {
-		target = GameObject.Find ("Target");
 		steadyPoint = GameObject.Find ("SteadyPoint");
 		destinationPoint = GameObject.Find ("DestinationPoint");
 		ropeEnd = GameObject.Find ("RopeEndA");
