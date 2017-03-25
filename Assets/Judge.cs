@@ -46,7 +46,7 @@ public class Judge : MonoBehaviour {
 
 	void gameReset() {
 		canvas.enabled = false;
-		SceneManager.UnloadSceneAsync ("Gameplay");
+		//SceneManager.UnloadSceneAsync ("Gameplay");
 		SceneManager.LoadScene ("GamePlay");
 	}
 
