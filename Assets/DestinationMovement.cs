@@ -24,10 +24,10 @@ public class DestinationMovement : MonoBehaviour {
 		if (!characterCol.enabled) {
 			blockSpeed = staticBlockScript.blockSpeed; 
 			transform.position = transform.position + Time.fixedDeltaTime * blockSpeed * Vector3.left; //x' = x + vt
-			print("newTarget = true");
+			//print("newTarget = true");
 		} else {
 			transform.position = target.transform.position;
-			print ("newTarget = false");
+			//print ("newTarget = false");
 		}
 	}
 }

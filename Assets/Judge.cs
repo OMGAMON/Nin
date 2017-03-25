@@ -9,19 +9,23 @@ public class Judge : MonoBehaviour {
 	private static int player1Score;
 	private static int player2Score;
 	private Text judgeText;
+	private Text player1Count;
+	private Text player2Count;
+	private Canvas canvas;
 	private bool died;
 
 	// Use this for initialization
 	void Start () {
-		player1Score = 0;
-		player2Score = 0;
+		//player1Score = 0;
+		//player2Score = 0;
+
+		canvas = GameObject.Find ("Canvas").GetComponent<Canvas> ();
 		judgeText = GameObject.Find ("JudgeText").GetComponent<Text> ();
+		player1Count = GameObject.Find ("Player1Count").GetComponent<Text> ();
+		player2Count = GameObject.Find ("Player2Count").GetComponent<Text> ();
+
+		canvas.enabled = false;
 		died = false;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 
 	void OnCollisionEnter2D(Collision2D coll) {
@@ -41,10 +45,15 @@ public class Judge : MonoBehaviour {
 	}
 
 	void gameReset() {
+		canvas.enabled = false;
+		SceneManager.UnloadSceneAsync ("Gameplay");
 		SceneManager.LoadScene ("GamePlay");
 	}
 
 	void SetText(int i) {
+		player1Count.text = "" + player1Score;
+		player2Count.text = "" + player2Score;
 		judgeText.text = "Player " + i + " won !";
+		canvas.enabled = true;
 	}
 }

@@ -26,11 +26,15 @@ public class CharacterMovement : MonoBehaviour {
 	private StaticBlockMovement staticBlockScript;
 
 	void Start () {
-		//time = Time.timeSinceLevelLoad;
+		
+		if (this.tag == "Player 1") {
+			transform.position = new Vector3 (-2.45f, 1.378f, 5f);
+		} else {
+			transform.position = new Vector3 (-2.45f, 0.05f, 5f);
+		}
 		staticBlock = GameObject.Find ("static block");
 		staticBlockScript = staticBlock.GetComponent<StaticBlockMovement> ();
 		steadyPoint = GameObject.Find ("SteadyPoint");
-		//destinationPoint = GameObject.Find ("DestinationPoint");
 		ropeScript = ropeEnd.GetComponent<RopeEndMovement> ();
 		//targetSelection = target.GetComponent<TargetSelection> ();
 		rb = GetComponent<Rigidbody2D> ();
@@ -62,13 +66,13 @@ public class CharacterMovement : MonoBehaviour {
 			leave = false;
 		}
 
-		if (transform.position.x != steadyPoint.transform.position.x && col.enabled) {
+		if (Mathf.Abs(transform.position.x - steadyPoint.transform.position.x) > 0.1f && col.enabled) {
 			blockSpeed = staticBlockScript.blockSpeed;
 			transform.position = transform.position + Time.fixedDeltaTime * (blockSpeed / distance + 0.02f) * (transform.position.x - steadyPoint.transform.position.x) * Vector3.left;
-			// x' = x - vt, where v = x - steadyPoint;  (creates an effect of exponentially slowing down, and let the character approach steadyPoint)
-			// 0.15f is the max for the character not backing on blocks. 0.7f = transform.position.x - steadyPoint.transform.position.x * 0.15f
-			// 0.7f is the block speed.
 		}
+		// x' = x - vt, where v = x - steadyPoint;  (creates an effect of exponentially slowing down, and let the character approach steadyPoint)
+		// 0.15f is the max for the character not backing on blocks. 0.7f = transform.position.x - steadyPoint.transform.position.x * 0.15f
+		// 0.7f is the block speed.
 
 		lt.intensity = 0.15f * Mathf.Sin (2f * Mathf.PI * Time.time) + 0.25f;// light
 	}

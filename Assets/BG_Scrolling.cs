@@ -8,18 +8,19 @@ public class BG_Scrolling : MonoBehaviour {
 	public float time;
 
 	private Vector3 startingPosition;
-	private GameObject staticBlock;
-	private StaticBlockMovement staticBlockScript;
+	//private GameObject staticBlock;
+	//private StaticBlockMovement staticBlockScript;
 
 	void Start () {
-		time = Time.timeSinceLevelLoad;
+		time = Time.time;
 		startingPosition = transform.position;
-		staticBlock = GameObject.Find ("static block");
-		staticBlockScript = staticBlock.GetComponent<StaticBlockMovement> ();
+	//	staticBlock = GameObject.Find ("static block");
+		scrollingSpeed = 0.5f;
+	//	staticBlockScript = staticBlock.GetComponent<StaticBlockMovement> ();
 	}
 	
 	void FixedUpdate () {
-		scrollingSpeed = 0.3f * staticBlockScript.blockSpeed; 
+		//scrollingSpeed = 0.3f * staticBlockScript.blockSpeed; 
 		float newPosition = Mathf.Repeat (Time.time * scrollingSpeed, tileLength);
 		transform.position = startingPosition + newPosition * Vector3.left;
 	}
