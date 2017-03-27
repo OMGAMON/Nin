@@ -8,17 +8,13 @@ public class Judge : MonoBehaviour {
 
 	private static int player1Score;
 	private static int player2Score;
-	private Text judgeText;
-	private Text player1Count;
-	private Text player2Count;
+	private Text judgeText;		//display which player win
+	private Text player1Count;	//display player1's score
+	private Text player2Count;	//display player2's score
 	private Canvas canvas;
-	private bool died;
+	private bool died;			//true when one player dies (reaches the judge block) in this turn
 
-	// Use this for initialization
 	void Start () {
-		//player1Score = 0;
-		//player2Score = 0;
-
 		canvas = GameObject.Find ("Canvas").GetComponent<Canvas> ();
 		judgeText = GameObject.Find ("JudgeText").GetComponent<Text> ();
 		player1Count = GameObject.Find ("Player1Count").GetComponent<Text> ();
@@ -31,29 +27,27 @@ public class Judge : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D coll) {
 		if (coll.gameObject.tag == "Player 1" && !died) {
 			player2Score++;
-			SetText (2);
+			SetText (2);	//update player 2's scoreboard
 			died = true;
 		}
 		if (coll.gameObject.tag == "Player 2" && !died) {
 			player1Score++;
-			SetText (1);
+			SetText (1);	//update player 1's scoreboard
 			died = true;
 		}
 
-		//StartCoroutine (gameReset());
-		Invoke("gameReset", 5f);
+		Invoke("gameReset", 5f);	//restart the game after 5 seconds
 	}
 
 	void gameReset() {
-		canvas.enabled = false;
-		//SceneManager.UnloadSceneAsync ("Gameplay");
-		SceneManager.LoadScene ("GamePlay");
+		canvas.enabled = false;		//stop showing the scores before restarting
+		SceneManager.LoadScene ("GamePlay");	//restart
 	}
 
 	void SetText(int i) {
 		player1Count.text = "" + player1Score;
 		player2Count.text = "" + player2Score;
 		judgeText.text = "Player " + i + " won !";
-		canvas.enabled = true;
+		canvas.enabled = true;	//enable after all changes are done
 	}
 }

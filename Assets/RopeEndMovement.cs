@@ -3,81 +3,66 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RopeEndMovement : MonoBehaviour {
-	public float[,] lane = new float[2,3]{{1.3f, -0.1f, -1.3f},{1.5f, 0.1f, -1.1f}};
-	public bool ropeReached;
-	public bool ropeEjected;
-	public Material mt;
-
+	public Material mt;	//rope material (color)
+	public GameObject destination;	//destination point
 	public GameObject character;
-	private BoxCollider2D characterCol;
 	public GameObject target;
+	public bool ropeReached;	//true when rope reached the target
+	public bool ropeEjected;	//true when rope is ejected from the character
+
+	private Vector3 characterOffset;// allow beam shine from the bulb of the character
+	private Vector3 backOffset; //allow beam to show in front of blocks
 	private TargetSelection targetScript;
-	public GameObject destination;
 	private Vector3 direction;
 	private LineRenderer rope;
+	private float distanceFromCharacter;
 
 	void Start () {
 		//character = GameObject.Find ("Character");
-		characterCol = character.GetComponent<BoxCollider2D> ();
+		//characterCol = character.GetComponent<BoxCollider2D> ();
 		//target = GameObject.Find ("Target");
 		targetScript = target.GetComponent<TargetSelection> ();
 		//destination = GameObject.Find ("DestinationPoint");
 		ropeReached = false;
-		
+		characterOffset = new Vector3 (0f, 0.17f, -0.1f);
+		backOffset = new Vector3 (0f, 0f, -0.1f);
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		distanceFromCharacter = Vector3.Distance (character.transform.position, transform.position);
 
-		if (targetScript.newTarget) {
-			if (!ropeEjected) {//instantiate
-				rope = gameObject.AddComponent<LineRenderer>() as LineRenderer;
-				rope.SetPosition (0, transform.position);
-				rope.SetPosition (1, character.transform.position);
+		if (!ropeEjected) {//rope haven't been ejected
+			if (targetScript.newTarget) {//a new target is valid
+				rope = gameObject.AddComponent<LineRenderer> () as LineRenderer;
+				setRopePosition ();
 				rope.startWidth = 0.05f;
 				rope.endWidth = 0.02f;
 				rope.material = mt;
 				ropeEjected = true;
+			} else {//if there is no new target existed, follow the character
+				transform.position = character.transform.position;
 			}
-
+		} else if (ropeEjected && !ropeReached) {//rope ejected but not reached the target yet	
 			direction = Vector3.Normalize (target.transform.position - transform.position);
 			transform.position = transform.position + direction * 10f * Time.deltaTime;
-			if (Lane (transform) == Lane (target.transform)) {
-				targetScript.newTarget = false;
-				ropeReached = true;
+			setRopePosition ();
+			if (Vector3.Distance (transform.position, target.transform.position) < 0.2f) { //the end point approx.(0.2f) reached the target
+				targetScript.newTarget = false; //the new target has reached, not new target any more
+				ropeReached = true; //rope has reached
 			}
-		}
-
-		if(!ropeEjected){
-			transform.position = character.transform.position;
-		} else { //change rope distance;
-			if (ropeReached) {
-				transform.position = destination.transform.position;
-			}
-			rope.SetPosition (1, transform.position + Vector3.back * 0.1f);
-			rope.SetPosition (0, character.transform.position + Vector3.back * 0.1f + Vector3.up * 0.17f);
-		}
-
-		if (characterCol.enabled && Lane(character.transform) == Lane(transform)) {
+		} else if (ropeEjected && ropeReached && distanceFromCharacter > 0.2f) {//rope ejected, reached, character not reached rope end yet
+			transform.position = destination.transform.position; //move along with it's destination point(the point wherever the end reached)
+			setRopePosition();
+		} else {//rope ejected, reached, character reached
 			ropeEjected = false;
 			ropeReached = false;
 			Destroy (rope);
-			//destroy rope
 		}
-
 	}
 
-	int Lane (Transform t) {
-		if (t.position.y < lane [1,0] && t.position.y > lane [0,0]) {
-			//lane 1 is when 1.2f < y < 1.6f
-			return 1;
-		} else if (t.position.y < lane [1,1] && t.position.y > lane [0,1]) {
-			//lane 2 is when -0.2f < y < 0.2f
-			return 2;
-		} else if (t.position.y < lane [1,2] && t.position.y > lane [0,2]) {
-			//lane 3 is when -1.4f < y < -1.0f
-			return 3;
-		} else
-			return 0;
+	void setRopePosition() {
+		rope.SetPosition (0, character.transform.position + backOffset + characterOffset);//start point
+		rope.SetPosition (1, transform.position + backOffset);//end point
 	}
 }

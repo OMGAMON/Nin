@@ -4,30 +4,24 @@ using UnityEngine;
 
 public class DestinationMovement : MonoBehaviour {
 	public GameObject target;
-	public GameObject character;
+	public GameObject ropeEnd;
 
-	private BoxCollider2D characterCol;
+	private RopeEndMovement ropeEndScript;
 	private float blockSpeed;
 	private StaticBlockMovement staticBlockScript;
 
-	// Use this for initialization
 	void Start () {
-		//target = GameObject.Find ("Target");
-		//character = GameObject.Find ("Character");
-		characterCol = character.GetComponent<BoxCollider2D> ();
+		ropeEndScript = ropeEnd.GetComponent<RopeEndMovement> ();
 		staticBlockScript = GameObject.Find ("static block").GetComponent<StaticBlockMovement>() ;
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 		
-		if (!characterCol.enabled) {
+		if (ropeEndScript.ropeReached) {//moves with static to block whenever the rope (beam) reaches the target
 			blockSpeed = staticBlockScript.blockSpeed; 
 			transform.position = transform.position + Time.fixedDeltaTime * blockSpeed * Vector3.left; //x' = x + vt
-			//print("newTarget = true");
-		} else {
+		} else {//move with target in otherwise
 			transform.position = target.transform.position;
-			//print ("newTarget = false");
 		}
 	}
 }

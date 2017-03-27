@@ -3,40 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour {
+	public float blockSpeed;
 	public int path;	//path number (1 represents the top lane, 2 is the middle lane, 3 is the bottom lane)
 	public float[,] lane = new float[2,3]{{1.3f, -0.1f, -1.3f},{1.5f, 0.1f, -1.1f}}; //i: 1 = min, 2 = max; j: 1,2,3 corresponding lane;
-	public float blockSpeed;
-	public float force = 20f;
-	//public float time;
-
-	private float distance;
-	public GameObject target;				//target	
-	private GameObject steadyPoint;			//the ultimate (time approach infinity) x position where the character would be after changing position
-	//private TargetSelection targetSelection;//for fetching whether the target is a new target
 	public GameObject destinationPoint;
 	public GameObject ropeEnd;
+
+	private float distanceToSteadyX;		//character distance to steadyPoint in x-axis
+	private float distanceToDestination;	//character distance to destination point
+	private GameObject steadyPoint;			//the ultimate (time approach infinity) x position where the character would be after changing position
 	private RopeEndMovement ropeScript;
-	private int targetPath;
 	private BoxCollider2D col;
 	private Rigidbody2D rb;
-	private Vector3 offset;
+	private Vector3 direction;
 	private Light lt;
 	private bool leave;
-	private GameObject staticBlock;
 	private StaticBlockMovement staticBlockScript;
 
 	void Start () {
 		
 		if (this.tag == "Player 1") {
-			transform.position = new Vector3 (-2.45f, 1.378f, 5f);
-		} else {
-			transform.position = new Vector3 (-2.45f, 0.05f, 5f);
+			transform.position = new Vector3 (-2.45f, 1.378f, 5f); 	//player 1 initial position;
+		} else {	
+			transform.position = new Vector3 (-2.45f, 0.05f, 5f);	//player 2 initial position;
 		}
-		staticBlock = GameObject.Find ("static block");
-		staticBlockScript = staticBlock.GetComponent<StaticBlockMovement> ();
-		steadyPoint = GameObject.Find ("SteadyPoint");
+		staticBlockScript = GameObject.Find ("static block").GetComponent<StaticBlockMovement> ();
+		steadyPoint = GameObject.Find ("SteadyPoint");	//SteadyPoint is at (-2.14, 0, 0) under parent Camera
 		ropeScript = ropeEnd.GetComponent<RopeEndMovement> ();
-		//targetSelection = target.GetComponent<TargetSelection> ();
 		rb = GetComponent<Rigidbody2D> ();
 		col = GetComponent<BoxCollider2D> ();
 		lt = GetComponent<Light> ();
@@ -44,39 +37,45 @@ public class CharacterMovement : MonoBehaviour {
 	}
 
 	void FixedUpdate () {
-		path = Lane (transform);
+		path = Lane (transform);	//identify the lane number for target
+		distanceToDestination = Vector3.Distance (destinationPoint.transform.position, transform.position); //distance to destination point
 
-		if (ropeScript.ropeReached && !leave) {
-			//the target is a new target (not transformed yet)
-			targetPath = Lane (target.transform);
+		if (ropeScript.ropeReached && !leave) {//the rope end has reached the target but character haven't left the lane yet
 
-			col.enabled = false;
-			rb.bodyType = RigidbodyType2D.Kinematic;
+			col.enabled = false;					 //allow character to travel through blocks without colliding on them
+			rb.bodyType = RigidbodyType2D.Kinematic; //allow character to travel in straight line ignoring the physics impacts
+			transform.position = transform.position + Vector3.back * 0.1f; //allow character to appear in front of blocks when transforming
 
-			leave = true; //set leave to true so that the character would only be transform to new position one time.
+			leave = true; 
+		} else if (distanceToDestination > 0.2f && leave) {//character left, not reaching the destination yet
+			direction = Vector3.Normalize(destinationPoint.transform.position - transform.position);
+			transform.position = transform.position + direction * 7.0f * Time.fixedDeltaTime;
+		} else if (distanceToDestination <=0.2f && leave) {//reached the destination (allow 0.2f offset)
+			col.enabled = true;						//character can collide
+			rb.bodyType = RigidbodyType2D.Dynamic;	//character have physics properties
+			distanceToSteadyX = Mathf.Abs(transform.position.x - steadyPoint.transform.position.x);	//only measure once, backing speed base on the largest offset to steadyPoint
+			transform.position = transform.position + Vector3.forward * 0.1f;	//return the character to original plane
+			leave = false;	//character is not leaving the lane
 		}
-
-		if (Lane (transform) != targetPath && !col.enabled) {
-			offset = Vector3.Normalize(destinationPoint.transform.position - transform.position);
-			transform.position = transform.position + (offset) * 7.0f * Time.fixedDeltaTime;
-		} else if (Lane(transform) == targetPath && !col.enabled) { //Destroy (spring);
-			col.enabled = true;
-			rb.bodyType = RigidbodyType2D.Dynamic;
-			distance = transform.position.x - steadyPoint.transform.position.x;
-			leave = false;
-		}
-
-		if (Mathf.Abs(transform.position.x - steadyPoint.transform.position.x) > 0.1f && col.enabled) {
-			blockSpeed = staticBlockScript.blockSpeed;
-			transform.position = transform.position + Time.fixedDeltaTime * (blockSpeed / distance + 0.02f) * (transform.position.x - steadyPoint.transform.position.x) * Vector3.left;
-		}
-		// x' = x - vt, where v = x - steadyPoint;  (creates an effect of exponentially slowing down, and let the character approach steadyPoint)
-		// 0.15f is the max for the character not backing on blocks. 0.7f = transform.position.x - steadyPoint.transform.position.x * 0.15f
-		// 0.7f is the block speed.
-
-		lt.intensity = 0.15f * Mathf.Sin (2f * Mathf.PI * Time.time) + 0.25f;// light
+		lightShining(1f, 0.1f, 0.3f);
 	}
 
+	void OnCollisionStay2D(Collision2D coll) {
+		if (coll.gameObject.tag == "Block") {
+			if (distanceToSteadyX > 0.1f) {//has enough offset (0.1f) to adjust position, and 
+				blockSpeed = staticBlockScript.blockSpeed;
+				transform.position = transform.position + Time.fixedDeltaTime * (blockSpeed / distanceToSteadyX + 0.02f) * (transform.position.x - steadyPoint.transform.position.x) * Vector3.left;
+			}
+			// x' = x - vt, where v = x - steadyPoint;  (creates an effect of exponentially slowing down, and let the character approach steadyPoint)
+			// 0.15f is the max for the character not backing on blocks. 0.7f = transform.position.x - steadyPoint.transform.position.x * 0.15f
+			// 0.7f is the block speed.
+		}		
+	}
+
+	void lightShining(float period, float min, float max) { //shining with period in seconds, with min intensity, max intensity
+		lt.intensity = (max - min) / 2f * Mathf.Sin (2f * Mathf.PI * Time.time / period) + (max + min) / 2f;// light
+	}
+		
 	int Lane (Transform t) {
 		if (t.position.y < lane [1,0] && t.position.y > lane [0,0]) {
 			//lane 1 is when 1.2f < y < 1.6f
@@ -90,5 +89,4 @@ public class CharacterMovement : MonoBehaviour {
 		} else
 			return 0;
 	}
-
 }

@@ -5,10 +5,10 @@ using UnityEngine;
 public class TargetSelection : MonoBehaviour {
 	public GameObject character;	//character
 	public float period;		//the swing period of the target (in seconds)
-	public bool newTarget;			//true if the target is once disabled and the character hasn't moved to the target's position.
 	public KeyCode lane1;
 	public KeyCode lane2;
 	public KeyCode lane3;
+	public bool newTarget;		//true if the target is once disabled and the character hasn't moved to the target's position.
 
 	private GameObject targetEndPoint;	//end point of the character's swing
 	private Vector3 startingPosition;	//mid point of the swing (character's x + 1.1 + 1/2 the distance between end point and character)
@@ -34,7 +34,6 @@ public class TargetSelection : MonoBehaviour {
 
 
 	void Start () {
-		/*character = GameObject.Find ("Character");*/
 		targetEndPoint = GameObject.Find ("TargetEndPoint");
 		characterMovement = character.GetComponent<CharacterMovement> ();
 		rend = GetComponent<Renderer>();
@@ -94,4 +93,6 @@ public class TargetSelection : MonoBehaviour {
 		targetEnabled = true;
 		inSameFrame = true;
 	}
+
+
 }
