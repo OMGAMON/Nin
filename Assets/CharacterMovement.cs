@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharacterMovement : MonoBehaviour {
 	public float blockSpeed;
 	public int path;	//path number (1 represents the top lane, 2 is the middle lane, 3 is the bottom lane)
-	public float[,] lane = new float[2,3]{{1.3f, -0.1f, -1.3f},{1.5f, 0.1f, -1.1f}}; //i: 1 = min, 2 = max; j: 1,2,3 corresponding lane;
+	public float[,] lane = new float[2,3]{{1.2f, -0.2f, -1.4f},{1.6f, 0.2f, -1.0f}}; //i: 1 = min, 2 = max; j: 1,2,3 corresponding lane;
 	public GameObject destinationPoint;
 	public GameObject ropeEnd;
 

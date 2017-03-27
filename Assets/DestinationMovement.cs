@@ -21,7 +21,7 @@ public class DestinationMovement : MonoBehaviour {
 			blockSpeed = staticBlockScript.blockSpeed; 
 			transform.position = transform.position + Time.fixedDeltaTime * blockSpeed * Vector3.left; //x' = x + vt
 		} else {//move with target in otherwise
-			transform.position = target.transform.position;
+			transform.position = target.transform.position; //+ 0.1f * Vector3.up;
 		}
 	}
 }

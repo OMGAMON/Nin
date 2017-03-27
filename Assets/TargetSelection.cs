@@ -48,17 +48,17 @@ public class TargetSelection : MonoBehaviour {
 
 		if (Input.GetKeyDown(lane1) && (!targetEnabled || !Input.GetKeyDown(lastKey)) && chrPath != 1) { 
 			//key hitted is Q, and path is not 1, and either target is enabled or the key hitted just now is not the same as lastkey
-			startingPosition = new Vector3 (character.transform.position.x + 1.1f + 0.5f * (distance - 1.1f), 1.355f, 5f);
+			startingPosition = new Vector3 (character.transform.position.x + 1.1f + 0.5f * (distance - 1.1f), 1.504f, 5f);
 			SetPosition ();
 			lastKey = lane1;
 		} else if (Input.GetKeyDown(lane2) && (!targetEnabled || !Input.GetKeyDown(lastKey)) && chrPath != 2) {
 			//key hitted is A, and path is not 2, and either target is enabled or the key hitted just now is not the same as lastkey
-			startingPosition = new Vector3 (character.transform.position.x + 1.1f + 0.5f * (distance - 1.1f), 0f, 5f);
+			startingPosition = new Vector3 (character.transform.position.x + 1.1f + 0.5f * (distance - 1.1f), 0.155f, 5f);
 			SetPosition ();
 			lastKey = lane2;
 		} else if (Input.GetKeyDown (lane3) && (!targetEnabled || !Input.GetKeyDown(lastKey)) && chrPath != 3) {
 			//key hitted is Z, and path is not 3, and either target is enabled or the key hitted just now is not the same as lastkey
-			startingPosition = new Vector3 (character.transform.position.x + 1.1f + 0.5f * (distance - 1.1f), -1.256f, 5f);
+			startingPosition = new Vector3 (character.transform.position.x + 1.1f + 0.5f * (distance - 1.1f), -1.125f, 5f);
 			SetPosition ();
 			lastKey = lane3;
 		}

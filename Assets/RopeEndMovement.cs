@@ -18,11 +18,7 @@ public class RopeEndMovement : MonoBehaviour {
 	private float distanceFromCharacter;
 
 	void Start () {
-		//character = GameObject.Find ("Character");
-		//characterCol = character.GetComponent<BoxCollider2D> ();
-		//target = GameObject.Find ("Target");
 		targetScript = target.GetComponent<TargetSelection> ();
-		//destination = GameObject.Find ("DestinationPoint");
 		ropeReached = false;
 		characterOffset = new Vector3 (0f, 0.17f, -0.1f);
 		backOffset = new Vector3 (0f, 0f, -0.1f);
@@ -32,7 +28,7 @@ public class RopeEndMovement : MonoBehaviour {
 	void Update () {
 		distanceFromCharacter = Vector3.Distance (character.transform.position, transform.position);
 
-		if (!ropeEjected) {//rope haven't been ejected
+		if (!ropeEjected && !ropeReached) {//rope haven't been ejected
 			if (targetScript.newTarget) {//a new target is valid
 				rope = gameObject.AddComponent<LineRenderer> () as LineRenderer;
 				setRopePosition ();
@@ -43,11 +39,11 @@ public class RopeEndMovement : MonoBehaviour {
 			} else {//if there is no new target existed, follow the character
 				transform.position = character.transform.position;
 			}
-		} else if (ropeEjected && !ropeReached) {//rope ejected but not reached the target yet	
-			direction = Vector3.Normalize (target.transform.position - transform.position);
+		} else if (ropeEjected && !ropeReached ) {//rope ejected but not reached the target(destination) yet	
+			direction = Vector3.Normalize (destination.transform.position - transform.position);
 			transform.position = transform.position + direction * 10f * Time.deltaTime;
 			setRopePosition ();
-			if (Vector3.Distance (transform.position, target.transform.position) < 0.2f) { //the end point approx.(0.2f) reached the target
+			if (Vector3.Distance (transform.position, destination.transform.position) < 0.2f) { //the end point approx.(0.2f) reached the target(destination)
 				targetScript.newTarget = false; //the new target has reached, not new target any more
 				ropeReached = true; //rope has reached
 			}
