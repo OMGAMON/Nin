@@ -8,6 +8,7 @@ public class Judge : MonoBehaviour {
 
 	private static int player1Score;
 	private static int player2Score;
+	//private static float highScore;
 	private Text judgeText;		//display which player win
 	private Text player1Count;	//display player1's score
 	private Text player2Count;	//display player2's score
@@ -64,7 +65,6 @@ public class Judge : MonoBehaviour {
 		speed = GameObject.Find ("static block").GetComponent<StaticBlockMovement> ().blockSpeed;
 		meters += 2f * speed * Time.deltaTime;
 		mileage.text = meters.ToString("F2") + " M";	//round to 2 decimals
-
 	}
 
 	void SetText(int i) {
