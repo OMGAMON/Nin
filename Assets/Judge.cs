@@ -11,17 +11,33 @@ public class Judge : MonoBehaviour {
 	private Text judgeText;		//display which player win
 	private Text player1Count;	//display player1's score
 	private Text player2Count;	//display player2's score
-	private Canvas canvas;
+	private Text mileage;
+	private float meters;
+	private GameObject scoreBoard;
+	private float speed;
 	private bool died;			//true when one player dies (reaches the judge block) in this turn
 
 	void Start () {
-		canvas = GameObject.Find ("Canvas").GetComponent<Canvas> ();
+		scoreBoard = GameObject.Find ("ScoreBoard");
 		judgeText = GameObject.Find ("JudgeText").GetComponent<Text> ();
 		player1Count = GameObject.Find ("Player1Count").GetComponent<Text> ();
 		player2Count = GameObject.Find ("Player2Count").GetComponent<Text> ();
+		mileage = GameObject.Find ("Mileage").GetComponent<Text> ();
 
-		canvas.enabled = false;
+		scoreBoard.SetActive(false);
 		died = false;
+		meters = 0;
+	}
+
+	void Update() {
+		
+		if (died) {
+			if (Input.anyKeyDown) {
+				gameReset ();
+			}
+		} else {
+			SetMileage ();
+		}
 	}
 
 	void OnCollisionEnter2D(Collision2D coll) {
@@ -36,18 +52,29 @@ public class Judge : MonoBehaviour {
 			died = true;
 		}
 
-		Invoke("gameReset", 5f);	//restart the game after 5 seconds
+		Invoke ("AskContinue", 2f);
 	}
 
 	void gameReset() {
-		canvas.enabled = false;		//stop showing the scores before restarting
+		scoreBoard.SetActive(false);		//stop showing the scores before restarting
 		SceneManager.LoadScene ("GamePlay");	//restart
+	}
+
+	void SetMileage() {
+		speed = GameObject.Find ("static block").GetComponent<StaticBlockMovement> ().blockSpeed;
+		meters += 2f * speed * Time.deltaTime;
+		mileage.text = meters.ToString("F2") + " M";	//round to 2 decimals
+
 	}
 
 	void SetText(int i) {
 		player1Count.text = "" + player1Score;
 		player2Count.text = "" + player2Score;
-		judgeText.text = "Player " + i + " won !";
-		canvas.enabled = true;	//enable after all changes are done
+		judgeText.text = "PLAYER " + i + " WON !";
+		scoreBoard.SetActive(true);	//enable after all changes are done
+	}
+
+	void AskContinue() {
+		judgeText.text = "PRESS ANY KEY TO CONTINUE";
 	}
 }

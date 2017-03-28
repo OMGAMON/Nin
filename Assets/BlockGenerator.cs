@@ -17,7 +17,7 @@ public class BlockGenerator : MonoBehaviour {
 	void Start () {
 		staticBlock = GameObject.Find ("static block");
 		staticBlockScript = staticBlock.GetComponent<StaticBlockMovement> ();
-		blockWidth = theBlock.GetComponent<BoxCollider2D> ().size.x;	//fetch block's width
+		blockWidth = 0.9f;	//fetch block's width
 		probability = 100f;
 		minProbability = 40f;
 		maxProbability = 70f;
@@ -33,7 +33,7 @@ public class BlockGenerator : MonoBehaviour {
 				//generate a block when the random value is less than probability
 				Instantiate (theBlock, transform.position, transform.rotation);
 			}
-			transform.position = new Vector3 (transform.position.x + blockWidth + 0.19f, transform.position.y, transform.position.z); //place the generator back a distance of a blockwidth
+			transform.position = new Vector3 (transform.position.x + blockWidth, transform.position.y, transform.position.z); //place the generator back a distance of a blockwidth
 
 		}
 	}

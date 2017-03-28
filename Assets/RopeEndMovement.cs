@@ -14,7 +14,7 @@ public class RopeEndMovement : MonoBehaviour {
 	private Vector3 backOffset; //allow beam to show in front of blocks
 	private TargetSelection targetScript;
 	private Vector3 direction;
-	private LineRenderer rope;
+	public LineRenderer rope;
 	private float distanceFromCharacter;
 
 	void Start () {
@@ -41,19 +41,15 @@ public class RopeEndMovement : MonoBehaviour {
 			}
 		} else if (ropeEjected && !ropeReached ) {//rope ejected but not reached the target(destination) yet	
 			direction = Vector3.Normalize (destination.transform.position - transform.position);
-			transform.position = transform.position + direction * 10f * Time.deltaTime;
+			transform.position = transform.position + direction * 17f * Time.deltaTime;
 			setRopePosition ();
 			if (Vector3.Distance (transform.position, destination.transform.position) < 0.2f) { //the end point approx.(0.2f) reached the target(destination)
 				targetScript.newTarget = false; //the new target has reached, not new target any more
 				ropeReached = true; //rope has reached
 			}
-		} else if (ropeEjected && ropeReached && distanceFromCharacter > 0.2f) {//rope ejected, reached, character not reached rope end yet
+		} else if (ropeEjected && ropeReached && distanceFromCharacter >= 0.2f) {//rope ejected, reached, character not reached rope end yet
 			transform.position = destination.transform.position; //move along with it's destination point(the point wherever the end reached)
 			setRopePosition();
-		} else {//rope ejected, reached, character reached
-			ropeEjected = false;
-			ropeReached = false;
-			Destroy (rope);
 		}
 	}
 

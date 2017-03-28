@@ -40,29 +40,34 @@ public class CharacterMovement : MonoBehaviour {
 		path = Lane (transform);	//identify the lane number for target
 		distanceToDestination = Vector3.Distance (destinationPoint.transform.position, transform.position); //distance to destination point
 
-		if (ropeScript.ropeReached && !leave) {//the rope end has reached the target but character haven't left the lane yet
+		if (ropeScript.ropeReached) {// after the rope end has reached the target, start moving
+			if (!leave) {//the rope end has reached the target but character haven't left the lane yet
 
-			col.enabled = false;					 //allow character to travel through blocks without colliding on them
-			rb.bodyType = RigidbodyType2D.Kinematic; //allow character to travel in straight line ignoring the physics impacts
-			transform.position = transform.position + Vector3.back * 0.1f; //allow character to appear in front of blocks when transforming
+				col.enabled = false;					 //allow character to travel through blocks without colliding on them
+				rb.bodyType = RigidbodyType2D.Kinematic; //allow character to travel in straight line ignoring the physics impacts
+				transform.position = transform.position + Vector3.back * 0.2f; //allow character to appear in front of blocks when transforming
 
-			leave = true; 
-		} else if (distanceToDestination > 0.2f && leave) {//character left, not reaching the destination yet
-			direction = Vector3.Normalize(destinationPoint.transform.position - transform.position);
-			transform.position = transform.position + direction * 7.0f * Time.fixedDeltaTime;
-		} else if (distanceToDestination <=0.2f && leave) {//reached the destination (allow 0.2f offset)
-			col.enabled = true;						//character can collide
-			rb.bodyType = RigidbodyType2D.Dynamic;	//character have physics properties
-			distanceToSteadyX = Mathf.Abs(transform.position.x - steadyPoint.transform.position.x);	//only measure once, backing speed base on the largest offset to steadyPoint
-			transform.position = transform.position + Vector3.forward * 0.1f;	//return the character to original plane
-			leave = false;	//character is not leaving the lane
+				leave = true; 
+			} else if (distanceToDestination > 0.2f && leave) {//character left, not reaching the destination yet
+				direction = Vector3.Normalize (destinationPoint.transform.position - transform.position);
+				transform.position = transform.position + direction * 12.5f * Time.fixedDeltaTime;
+			} else if (distanceToDestination <= 0.2f && leave) {//reached the destination (allow 0.2f offset)
+				col.enabled = true;						//character can collide
+				rb.bodyType = RigidbodyType2D.Dynamic;	//character have physics properties
+				distanceToSteadyX = Mathf.Abs (transform.position.x - steadyPoint.transform.position.x);	//only measure once, backing speed base on the largest offset to steadyPoint
+				transform.position = transform.position + Vector3.forward * 0.1f;	//return the character to original plane
+				leave = false;	//character is not leaving the lane
+				ropeScript.ropeEjected = false;//disable ropes when the character arrives
+				ropeScript.ropeReached = false;
+				Destroy (ropeScript.rope);
+			}
 		}
 		lightShining(1f, 0.1f, 0.3f);
 	}
 
 	void OnCollisionStay2D(Collision2D coll) {
 		if (coll.gameObject.tag == "Block") {
-			if (distanceToSteadyX > 0.1f) {//has enough offset (0.1f) to adjust position, and 
+			if (distanceToSteadyX > 0.1f) {//has enough offset (0.1f) to adjust position, prevent blockSpeed divide number near a zero
 				blockSpeed = staticBlockScript.blockSpeed;
 				transform.position = transform.position + Time.fixedDeltaTime * (blockSpeed / distanceToSteadyX + 0.02f) * (transform.position.x - steadyPoint.transform.position.x) * Vector3.left;
 			}
@@ -87,6 +92,6 @@ public class CharacterMovement : MonoBehaviour {
 			//lane 3 is when -1.4f < y < -1.0f
 			return 3;
 		} else
-			return 0;
+			return 0;//not in any lane
 	}
 }
