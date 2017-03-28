@@ -54,8 +54,6 @@ public class CharacterMovement : MonoBehaviour {
 			} else if (distanceToDestination <= 0.2f && leave) {//reached the destination (allow 0.2f offset)
 				col.enabled = true;						//character can collide
 				rb.bodyType = RigidbodyType2D.Dynamic;	//character have physics properties
-				distanceToSteadyX = Mathf.Abs (transform.position.x - steadyPoint.transform.position.x);	//only measure once, backing speed base on the largest offset to steadyPoint
-				transform.position = transform.position + Vector3.forward * 0.1f;	//return the character to original plane
 				leave = false;	//character is not leaving the lane
 				ropeScript.ropeEjected = false;//disable ropes when the character arrives
 				ropeScript.ropeReached = false;
@@ -63,6 +61,13 @@ public class CharacterMovement : MonoBehaviour {
 			}
 		}
 		lightShining(1f, 0.1f, 0.3f);
+	}
+
+	void OnCollisionEnter2D(Collision2D coll) {
+		if (coll.gameObject.tag == "Block") {
+			distanceToSteadyX = Mathf.Abs (transform.position.x - steadyPoint.transform.position.x);	//only measure once, backing speed base on the largest offset to steadyPoint
+			transform.position = transform.position + Vector3.forward * 0.1f;	//return the character to original plane
+		}
 	}
 
 	void OnCollisionStay2D(Collision2D coll) {

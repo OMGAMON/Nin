@@ -70,11 +70,11 @@ public class Judge : MonoBehaviour {
 	void SetText(int i) {
 		player1Count.text = "" + player1Score;
 		player2Count.text = "" + player2Score;
-		judgeText.text = "PLAYER " + i + " WON !";
+		judgeText.text = "P L A Y E R  " + i + "  W O N";
 		scoreBoard.SetActive(true);	//enable after all changes are done
 	}
 
 	void AskContinue() {
-		judgeText.text = "PRESS ANY KEY TO CONTINUE";
+		judgeText.text = "P R E S S  A N Y K E Y \nT O\nC O N T I N U E";
 	}
 }

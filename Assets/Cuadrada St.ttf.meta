@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 465a373660eca41a0b2b7d145290456d
+timeCreated: 1490681947
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Cuadrada St
+  fontNames:
+  - Cuadrada St
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
