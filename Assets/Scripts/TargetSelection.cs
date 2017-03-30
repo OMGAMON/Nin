@@ -19,6 +19,7 @@ public class TargetSelection : MonoBehaviour {
 	private KeyCode lastKey;	//the last key hitted
 	private bool targetEnabled; //true when target is enabled to be rendered and moves sinusoidally.
 	private bool inSameFrame;	//true if target is enabled in a specific frame. Prevent triggering disabling target
+	private AudioSource source;
 
 	//					|----distance (Moving Area) ----|
 	//					|								|
@@ -36,6 +37,7 @@ public class TargetSelection : MonoBehaviour {
 	void Start () {
 		targetEndPoint = GameObject.Find ("TargetEndPoint");
 		characterMovement = character.GetComponent<CharacterMovement> ();
+		source = GetComponent<AudioSource> ();
 		rend = GetComponent<Renderer>();
 		period = 1;
 		rend.enabled = false;
@@ -79,6 +81,7 @@ public class TargetSelection : MonoBehaviour {
 
 		if ((Input.GetKeyDown(lastKey) && targetEnabled) && !inSameFrame) {
 			//the key hitted just now is the same the last key, and the target is enabled, it is not in the same frame with enabling target
+			source.PlayOneShot (source.clip, 0.75f);
 			targetEnabled = false;
 			rend.enabled = false;
 			newTarget = true;

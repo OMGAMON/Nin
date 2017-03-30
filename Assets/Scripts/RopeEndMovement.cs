@@ -9,7 +9,7 @@ public class RopeEndMovement : MonoBehaviour {
 	public GameObject target;
 	public bool ropeReached;	//true when rope reached the target
 	public bool ropeEjected;	//true when rope is ejected from the character
-	public AudioClip laserEjectClip;
+	public AudioClip laserEjectedClip;
 
 	private Vector3 characterOffset;// allow beam shine from the bulb of the character
 	private Vector3 backOffset; //allow beam to show in front of blocks
@@ -21,10 +21,10 @@ public class RopeEndMovement : MonoBehaviour {
 
 	void Start () {
 		targetScript = target.GetComponent<TargetSelection> ();
+		source = GetComponent<AudioSource> ();
 		ropeReached = false;
 		characterOffset = new Vector3 (0f, 0.17f, -0.1f);
 		backOffset = new Vector3 (0f, 0f, -0.1f);
-		source = GetComponent<AudioSource> ();
 	}
 	
 	// Update is called once per frame
@@ -40,7 +40,8 @@ public class RopeEndMovement : MonoBehaviour {
 				rope.material = mt;
 				ropeEjected = true;
 				float vol = Random.Range (0.5f, 1f);
-				source.PlayOneShot (laserEjectClip, vol);
+				source.PlayOneShot (laserEjectedClip, vol);
+
 			} else {//if there is no new target existed, follow the character
 				transform.position = character.transform.position;
 			}

@@ -10,10 +10,13 @@ public class StaticBlockMovement : MonoBehaviour {
 	public float min;
 	private BG_Scrolling backgroundScript;
 
+	void Awake () {
+		max = 5f;
+		min = 3f;
+	}
+
 	void Start () {
 		startingPosition = transform.position;
-		max = 7;
-		min = 4;
 		backgroundScript = GameObject.Find ("Backgrounds").GetComponent<BG_Scrolling>();
 	}
 
