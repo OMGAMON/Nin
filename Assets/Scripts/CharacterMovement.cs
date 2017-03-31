@@ -81,7 +81,7 @@ public class CharacterMovement : MonoBehaviour {
 	void thrust() {
 		if (thrusting) {
 			if (Time.time - thrustStartTime < 0.2f) {
-				transform.position = transform.position + Vector3.right * 3f * Time.fixedDeltaTime;
+				transform.position = transform.position + Vector3.right * 4f * Time.fixedDeltaTime;
 			} else {
 				flame.Stop ();
 				thrusting = false;

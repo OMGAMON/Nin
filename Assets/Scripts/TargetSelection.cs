@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TargetSelection : MonoBehaviour {
 	public GameObject character;	//character
+	public GameObject targetSpray;
 	public float period;		//the swing period of the target (in seconds)
 	public KeyCode lane1;
 	public KeyCode lane2;
@@ -20,6 +21,7 @@ public class TargetSelection : MonoBehaviour {
 	private bool targetEnabled; //true when target is enabled to be rendered and moves sinusoidally.
 	private bool inSameFrame;	//true if target is enabled in a specific frame. Prevent triggering disabling target
 	private AudioSource source;
+	private ParticleSystem spray;
 
 	//					|----distance (Moving Area) ----|
 	//					|								|
@@ -37,6 +39,7 @@ public class TargetSelection : MonoBehaviour {
 	void Start () {
 		targetEndPoint = GameObject.Find ("TargetEndPoint");
 		characterMovement = character.GetComponent<CharacterMovement> ();
+		spray = targetSpray.GetComponent<ParticleSystem> ();
 		source = GetComponent<AudioSource> ();
 		rend = GetComponent<Renderer>();
 		period = 1;
@@ -85,9 +88,15 @@ public class TargetSelection : MonoBehaviour {
 			targetEnabled = false;
 			rend.enabled = false;
 			newTarget = true;
+			spray.Play ();
+			Invoke ("stopSpray", 1f);
 		}
 
 		inSameFrame = false;
+	}
+
+	void stopSpray() {
+		spray.Stop ();
 	}
 
 	//set the target's position to the starting position, enable the target, and set inSameFrame to true so that disabling target cannot happen in the current frame
