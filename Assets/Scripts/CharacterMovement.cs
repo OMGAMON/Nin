@@ -18,11 +18,11 @@ public class CharacterMovement : MonoBehaviour {
 	private BoxCollider2D col;
 	private Rigidbody2D rb;
 	private Vector3 direction;
+	private float characterSpeed;
 	private Light lt;
 	private bool leave;
 	private StaticBlockMovement staticBlockScript;
 	private bool resetingPosition;
-
 
 	private ParticleSystem flame;
 	private bool thrusting;
@@ -32,10 +32,8 @@ public class CharacterMovement : MonoBehaviour {
 
 	private int collisionCount;
 
-
-
-
 	void Start () {
+		Physics2D.queriesStartInColliders = false;
 
 		if (this.tag == "Player 1") {
 			transform.position = new Vector3 (-2.45f, 1.378f, 5f); 	//player 1 initial position;
@@ -59,6 +57,7 @@ public class CharacterMovement : MonoBehaviour {
 	void FixedUpdate () {
 		path = Lane (transform);	//identify the lane number for target
 		distanceToDestination = Vector3.Distance (destinationPoint.transform.position, transform.position); //distance to destination point
+		characterSpeed = 5 + 2.5f * staticBlockScript.blockSpeed;
 
 		travelingToDestination ();
 		backingAdjust ();
@@ -100,7 +99,7 @@ public class CharacterMovement : MonoBehaviour {
 				leave = true; 
 			} else if (distanceToDestination > 0.2f && leave) {//character left, not reaching the destination yet
 				direction = Vector3.Normalize (destinationPoint.transform.position - transform.position);
-				transform.position = transform.position + direction * 12.5f * Time.fixedDeltaTime;
+				transform.position = transform.position + direction * characterSpeed * Time.fixedDeltaTime;
 			} else if (distanceToDestination <= 0.2f && leave) {//reached the destination (allow 0.2f offset)
 				col.enabled = true;						//character can collide
 				rb.bodyType = RigidbodyType2D.Dynamic;	//character have physics properties
@@ -115,8 +114,11 @@ public class CharacterMovement : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D coll) {
 		if (coll.gameObject.tag == "Block") {
-			thrustCount = 0;
-			collisionCount++;
+			if (onBlockTop (coll)) {
+				thrustCount = 0;
+				collisionCount++;
+			}
+
 			distanceToSteadyX = Mathf.Abs (transform.position.x - steadyPoint.transform.position.x);	//only measure once, backing speed base on the largest offset to steadyPoint
 		}
 	}
@@ -131,7 +133,11 @@ public class CharacterMovement : MonoBehaviour {
 	}
 
 	void OnCollisionExit2D(Collision2D coll) {
-			collisionCount--;
+		if (coll.gameObject.tag == "Block") {
+			if (!onBlockTop()) {
+				collisionCount = 0;
+			}
+		}
 	}
 
 	void backingAdjust() {
@@ -166,5 +172,30 @@ public class CharacterMovement : MonoBehaviour {
 				return 3;
 			} else
 				return 0;//not in any lane
+	}
+
+	bool onBlockTop (Collision2D coll) {
+		Vector2 direction = (coll.gameObject.transform.position - this.transform.position).normalized;
+		RaycastHit2D rayHit; 
+		rayHit = Physics2D.Raycast (this.transform.position, direction, 1f);
+		if (rayHit != null) {
+			if (rayHit.collider != null) {
+				Vector2 norm = rayHit.normal;
+				norm = rayHit.transform.TransformDirection (norm);
+				return (norm == Vector2.up);
+			}
+		} 
+		return false;
+	}
+
+	bool onBlockTop () {
+		RaycastHit2D rayHit; 
+		rayHit = Physics2D.Raycast (this.transform.position, Vector2.down, 1f);
+		if (rayHit != null && rayHit.collider != null && rayHit.collider.tag == "Block") {
+			Vector2 norm = rayHit.normal;
+			norm = rayHit.transform.TransformDirection (norm);
+			return (norm == Vector2.up);
+		} 
+		return false;
 	}
 }
