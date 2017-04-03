@@ -52,10 +52,13 @@
      <Compile Include="Assets\Scripts\BlockGenerator.cs" />
      <Compile Include="Assets\Scripts\CharacterMovement.cs" />
      <Compile Include="Assets\Scripts\DestinationMovement.cs" />
+     <Compile Include="Assets\Scripts\GameCtrl.cs" />
      <Compile Include="Assets\Scripts\Judge.cs" />
+     <Compile Include="Assets\Scripts\KeySettingButton.cs" />
      <Compile Include="Assets\Scripts\MenuCtrl.cs" />
      <Compile Include="Assets\Scripts\PlayButtonEffect.cs" />
      <Compile Include="Assets\Scripts\RopeEndMovement.cs" />
+     <Compile Include="Assets\Scripts\SetDefault.cs" />
      <Compile Include="Assets\Scripts\StaticBlockMovement.cs" />
      <Compile Include="Assets\Scripts\TargetSelection.cs" />
  <Reference Include="UnityEngine.UI">

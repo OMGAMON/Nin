@@ -37,8 +37,10 @@ public class CharacterMovement : MonoBehaviour {
 
 		if (this.tag == "Player 1") {
 			transform.position = new Vector3 (-2.45f, 1.378f, 5f); 	//player 1 initial position;
+			GameCtrl.control.ctrlDict.TryGetValue("p1t", out thrustKey);
 		} else {	
 			transform.position = new Vector3 (-2.45f, 0.05f, 5f);	//player 2 initial position;
+			GameCtrl.control.ctrlDict.TryGetValue("p2t", out thrustKey);
 		}
 		staticBlockScript = GameObject.Find ("static block").GetComponent<StaticBlockMovement> ();
 		steadyPoint = GameObject.Find ("SteadyPoint");	//SteadyPoint is at (-2.14, 0, 0) under parent Camera

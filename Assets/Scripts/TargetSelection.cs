@@ -45,6 +45,8 @@ public class TargetSelection : MonoBehaviour {
 		period = 1;
 		rend.enabled = false;
 		newTarget = false;
+
+		SetKey ();
 	}
 
 	void Update () {
@@ -106,5 +108,16 @@ public class TargetSelection : MonoBehaviour {
 		inSameFrame = true;
 	}
 
+	void SetKey() {
+		if (gameObject.tag == "Player 1") {
+			GameCtrl.control.ctrlDict.TryGetValue ("p1l1", out lane1);
+			GameCtrl.control.ctrlDict.TryGetValue ("p1l2", out lane2);
+			GameCtrl.control.ctrlDict.TryGetValue ("p1l3", out lane3);
+		} else {
+			GameCtrl.control.ctrlDict.TryGetValue ("p2l1", out lane1);
+			GameCtrl.control.ctrlDict.TryGetValue ("p2l2", out lane2);
+			GameCtrl.control.ctrlDict.TryGetValue ("p2l3", out lane3);
+		}
+	}
 
 }
