@@ -9,11 +9,13 @@ public class KeySettingButton : MonoBehaviour {
 	public Text keyText;
 	public bool ifSelected;
 	private KeyCode key;
+	private AudioSource source;
 
 	void Awake() {
 		selected = new Dictionary<string, bool> ();
 		waitingForInputKey = false;
 		iniSelected ();
+		source = GetComponent<AudioSource> ();
 	}
 
 	void OnGUI() {
@@ -38,6 +40,7 @@ public class KeySettingButton : MonoBehaviour {
 	}
 
 	public void mouseDown() {
+		source.PlayOneShot (source.clip, 0.5f);
 		keyText.color = new Color (0, 249, 219, 255);
 		selected.Clear ();
 		iniSelected ();

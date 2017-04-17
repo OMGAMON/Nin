@@ -11,8 +11,8 @@ public class StaticBlockMovement : MonoBehaviour {
 	private BG_Scrolling backgroundScript;
 
 	void Awake () {
-		max = 5f;
-		min = 3f;
+		max = 8f;
+		min = 5f;
 	}
 
 	void Start () {

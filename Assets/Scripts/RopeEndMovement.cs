@@ -9,6 +9,8 @@ public class RopeEndMovement : MonoBehaviour {
 	public GameObject target;
 	public bool ropeReached;	//true when rope reached the target
 	public bool ropeEjected;	//true when rope is ejected from the character
+	public bool ropeHitting;	//true when rope hit effect on (only one frame)
+
 
 	private Vector3 characterOffset;// allow beam shine from the bulb of the character
 	private Vector3 backOffset; //allow beam to show in front of blocks
@@ -22,13 +24,14 @@ public class RopeEndMovement : MonoBehaviour {
 		targetScript = target.GetComponent<TargetSelection> ();
 		source = GetComponent<AudioSource> ();
 		ropeReached = false;
-		characterOffset = new Vector3 (0f, 0.17f, -0.1f);
+		characterOffset = new Vector3 (0.126f, 0.1076f, -0.1f); //(0,0.17,0.1)
 		backOffset = new Vector3 (0f, 0f, -0.1f);
 	}
 
 	// Update is called once per frame
 	void Update () {
 		distanceFromCharacter = Vector3.Distance (character.transform.position, transform.position);
+		ropeHitting = false;
 
 		if (!ropeEjected && !ropeReached) {//rope haven't been ejected
 			if (targetScript.newTarget) {//a new target is valid
@@ -52,12 +55,17 @@ public class RopeEndMovement : MonoBehaviour {
 			if (Vector3.Distance (transform.position, destination.transform.position) < 0.2f) { //the end point approx.(0.2f) reached the target(destination)
 				targetScript.newTarget = false; //the new target has reached, not new target any more
 				ropeReached = true; //rope has reached
+				ropeHitting = true;
+
+
 			}
 		} else if (ropeEjected && ropeReached && distanceFromCharacter >= 0.2f) {//rope ejected, reached, character not reached rope end yet
 			transform.position = destination.transform.position; //move along with it's destination point(the point wherever the end reached)
 			setRopePosition();
 		}
 	}
+
+
 
 	void setRopePosition() {
 		rope.SetPosition (0, character.transform.position + backOffset + characterOffset);//start point

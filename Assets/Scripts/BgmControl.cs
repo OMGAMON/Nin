@@ -12,13 +12,16 @@ public class BgmControl : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		bgmSource = GetComponent<AudioSource> ();
+		bgmSource.loop = true;
+		bgmSource.Play ();
 		initialTime = Time.time;
 	}
 
 	// Update is called once per frame
 	void Update () {
-		currentTime = Time.time;
-		bgmSource.pitch = (currentTime - initialTime) / 600f + 1;
-
+		if (gameObject.name == "GameBGM") {
+			currentTime = Time.time;
+			bgmSource.pitch = (currentTime - initialTime) / 600f + 1;
+		}
 	}
 }

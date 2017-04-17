@@ -20,14 +20,10 @@ public class GameCtrl : MonoBehaviour {
 		} else if (control != this) {
 			Destroy (gameObject);
 		}
-	}
-
-	void Start () {
 		ctrlDict = new Dictionary<String, KeyCode> ();
 		//waitingForInputKey = false;
 		load();
 	}
-
 
 	public void Save() {
 		BinaryFormatter bf = new BinaryFormatter();

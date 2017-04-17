@@ -7,6 +7,7 @@ TagManager:
   - Player 1
   - Player 2
   - Block
+  - RopeEnd
   layers:
   - Default
   - TransparentFX

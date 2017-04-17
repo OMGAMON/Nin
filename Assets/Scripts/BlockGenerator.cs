@@ -33,7 +33,7 @@ public class BlockGenerator : MonoBehaviour {
 		probability = (maxProbability - minProbability) * Mathf.Exp (-(Time.time - referenceTime) / 200f) + minProbability; 
 		//model: A * e ^ (-t / T) + B;	when time = 0, probability = A + B; when t = T, probability = 0.37A + B;
 		if (transform.position.x < generatingPoint.transform.position.x) {
-			if (Random.value * 100f < probability) {
+			if (Random.value * 100f < 100) { //probability
 				//generate a block when the random value is less than probability
 				Instantiate (theBlock, transform.position, transform.rotation);
 				backOffset = blockWidth;

@@ -10,6 +10,7 @@ public class CharacterMovement : MonoBehaviour {
 	public GameObject ropeEnd;
 	public GameObject thrustFlame;
 	public KeyCode thrustKey;
+	public AudioClip thrustClip;
 
 	private float distanceToSteadyX;		//character distance to steadyPoint in x-axis
 	private float distanceToDestination;	//character distance to destination point
@@ -22,13 +23,14 @@ public class CharacterMovement : MonoBehaviour {
 	private Light lt;
 	private bool leave;
 	private StaticBlockMovement staticBlockScript;
-	private bool resetingPosition;
+	public bool resetingPosition;
 
 	private ParticleSystem flame;
 	private bool thrusting;
 	private float thrustStartTime;
 	public int thrustCount;
-	private AudioSource flameSource;
+	private AudioSource Source;
+	private Animator anim;
 
 	private int collisionCount;
 
@@ -48,9 +50,9 @@ public class CharacterMovement : MonoBehaviour {
 		rb = GetComponent<Rigidbody2D> ();
 		col = GetComponent<BoxCollider2D> ();
 		lt = GetComponent<Light> ();
+		anim = GetComponent<Animator> ();
 
-		flame = thrustFlame.GetComponent<ParticleSystem> ();
-		flameSource = GetComponent<AudioSource> ();
+		Source = GetComponent<AudioSource> ();
 
 		collisionCount = 0;
 		thrusting = false;
@@ -60,6 +62,7 @@ public class CharacterMovement : MonoBehaviour {
 		path = Lane (transform);	//identify the lane number for target
 		distanceToDestination = Vector3.Distance (destinationPoint.transform.position, transform.position); //distance to destination point
 		characterSpeed = 5 + 2.5f * staticBlockScript.blockSpeed;
+		anim.SetBool("ejected", ropeScript.ropeEjected);
 
 		travelingToDestination ();
 		backingAdjust ();
@@ -71,7 +74,7 @@ public class CharacterMovement : MonoBehaviour {
 		if (collisionCount == 0 && !ropeScript.ropeEjected && thrustCount == 0) {
 			if (Input.GetKeyDown (thrustKey)) {
 				flame.Play ();
-				flameSource.PlayOneShot (flameSource.clip, Random.Range (0.5f, 1f));
+				Source.PlayOneShot (thrustClip, Random.Range (0.5f, 1f));
 				thrusting = true;
 				thrustStartTime = Time.time;
 				thrustCount++;

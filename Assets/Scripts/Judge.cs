@@ -6,79 +6,63 @@ using UnityEngine.SceneManagement;
 
 public class Judge : MonoBehaviour {
 
-	private static int player1Score;
-	private static int player2Score;
+	public static int player1Score;
+	public static int player2Score;
 	//private static float highScore;
-	private Text judgeText;		//display which player win
-	private Text player1Count;	//display player1's score
-	private Text player2Count;	//display player2's score
-	private Text mileage;
-	private float meters;
-	private GameObject scoreBoard;
+	public float meters;
+	public int winner;
+
+	public GameObject p1T;
+	public GameObject p1D;
+	public GameObject p1CR;
+	public GameObject p1RP;
+
+	public GameObject p2T;
+	public GameObject p2D;
+	public GameObject p2CR;
+	public GameObject p2RP;
+
 	private float speed;
-	private bool died;			//true when one player dies (reaches the judge block) in this turn
-	private float deadTime;
+	public bool died;			//true when one player dies (reaches the judge block) in this turn
 
 	void Start () {
-		scoreBoard = GameObject.Find ("ScoreBoard");
-		judgeText = GameObject.Find ("JudgeText").GetComponent<Text> ();
-		player1Count = GameObject.Find ("Player1Count").GetComponent<Text> ();
-		player2Count = GameObject.Find ("Player2Count").GetComponent<Text> ();
-		mileage = GameObject.Find ("Mileage").GetComponent<Text> ();
-
-		scoreBoard.SetActive(false);
 		died = false;
 		meters = 0;
-
 	}
 
 	void Update() {
-		
-		if (died) {
-			if (Input.anyKeyDown && Time.time - deadTime >= 2f) {
-				gameReset ();
-			}
-		} else {
-			SetMileage ();
-		}
+		speed = GameObject.Find ("static block").GetComponent<StaticBlockMovement> ().blockSpeed;
+		meters += 2f * speed * Time.deltaTime;
 	}
 
 	void OnCollisionEnter2D(Collision2D coll) {
 		if (coll.gameObject.tag == "Player 1" && !died) {
-			player2Score++;
-			SetText (2);	//update player 2's scoreboard
-			died = true;
-			deadTime = Time.time;
+			player2Win ();
 		}
 		if (coll.gameObject.tag == "Player 2" && !died) {
-			player1Score++;
-			SetText (1);	//update player 1's scoreboard
-			died = true;
-			deadTime = Time.time;
+			player1Win ();
 		}
-
-		Invoke ("AskContinue", 2f);
 	}
 
-	void gameReset() {
-		scoreBoard.SetActive(false);		//stop showing the scores before restarting
-		SceneManager.LoadScene ("GamePlay");	//restart
+	public void player1Win() {
+		player1Score++;
+		winner = 1;
+		died = true;
+		p2T.SetActive (false);
+		p2D.SetActive (false);
+		p2RP.SetActive (false);
+		p2CR.GetComponent<SpriteRenderer> ().enabled = false;
+		p2CR.GetComponent<BoxCollider2D> ().enabled = false;
 	}
 
-	void SetMileage() {
-		speed = GameObject.Find ("static block").GetComponent<StaticBlockMovement> ().blockSpeed;
-		meters += 2f * speed * Time.deltaTime;
-		mileage.text = meters.ToString("F2") + " M";	//round to 2 decimals
-	}
-
-	void SetText(int i) {
-		player1Count.text = "" + player1Score;
-		player2Count.text = "" + player2Score;
-		judgeText.text = "P L A Y E R  " + i + "  W O N";
-		scoreBoard.SetActive(true);	//enable after all changes are done
-	}
-
-	void AskContinue() {
-		judgeText.text = "P R E S S  A N Y K E Y \nT O\nC O N T I N U E";
+	public void player2Win() {
+		player2Score++;
+		winner = 2;
+		died = true;
+		p1T.SetActive (false);
+		p1D.SetActive (false);
+		p1RP.SetActive (false);
+		p1CR.GetComponent<SpriteRenderer> ().enabled = false;
+		p1CR.GetComponent<BoxCollider2D> ().enabled = false;
 	}
 }
