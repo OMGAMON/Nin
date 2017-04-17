@@ -8,7 +8,7 @@ public class CharacterMovement : MonoBehaviour {
 	public float[,] lane = new float[2,3]{{0.9f, -0.45f, -1.75f},{1.45f, 0.15f, -1.15f}}; //i: 1 = min, 2 = max; j: 1,2,3 corresponding lane; 1.4; 0; -1.2
 	public GameObject destinationPoint;
 	public GameObject ropeEnd;
-	public GameObject thrustFlame;
+	public ParticleSystem flame;
 	public KeyCode thrustKey;
 	public AudioClip thrustClip;
 
@@ -25,7 +25,7 @@ public class CharacterMovement : MonoBehaviour {
 	private StaticBlockMovement staticBlockScript;
 	public bool resetingPosition;
 
-	private ParticleSystem flame;
+
 	private bool thrusting;
 	private float thrustStartTime;
 	public int thrustCount;

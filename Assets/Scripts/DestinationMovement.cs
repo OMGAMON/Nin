@@ -19,7 +19,7 @@ public class DestinationMovement : MonoBehaviour {
 		
 		if (ropeEndScript.ropeReached) {//moves with static to block whenever the rope (beam) reaches the target
 			blockSpeed = staticBlockScript.blockSpeed; 
-			transform.position = transform.position + Time.fixedDeltaTime * blockSpeed * Vector3.left; //x' = x + vt
+			transform.position = transform.position + Time.deltaTime * blockSpeed * Vector3.left; //x' = x + vt
 		} else {//move with target in otherwise
 			transform.position = target.transform.position; //+ 0.1f * Vector3.up;
 		}

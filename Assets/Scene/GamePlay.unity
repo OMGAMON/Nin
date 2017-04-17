@@ -13275,7 +13275,7 @@ MonoBehaviour:
   path: 0
   destinationPoint: {fileID: 551121876}
   ropeEnd: {fileID: 1760946167}
-  thrustFlame: {fileID: 782872877}
+  flame: {fileID: 782872880}
   thrustKey: 110
   thrustClip: {fileID: 8300000, guid: 7fe161fa5c8c24876ab8b927942bbbe0, type: 3}
   resetingPosition: 0
@@ -25443,7 +25443,7 @@ MonoBehaviour:
   path: 0
   destinationPoint: {fileID: 200418028}
   ropeEnd: {fileID: 381023710}
-  thrustFlame: {fileID: 1146111216}
+  flame: {fileID: 1146111219}
   thrustKey: 32
   thrustClip: {fileID: 8300000, guid: 7fe161fa5c8c24876ab8b927942bbbe0, type: 3}
   resetingPosition: 0
