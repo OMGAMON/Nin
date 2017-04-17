@@ -4665,6 +4665,8 @@ MonoBehaviour:
   ropeReached: 0
   ropeEjected: 0
   ropeHitting: 0
+  startColor: {r: 0, g: 1, b: 1, a: 1}
+  endColor: {r: 1, g: 1, b: 1, a: 1}
   rope: {fileID: 0}
 --- !u!4 &381023712
 Transform:
@@ -13393,7 +13395,7 @@ Transform:
   - {fileID: 782872878}
   - {fileID: 1708705483}
   m_Father: {fileID: 2134688775}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &1110664983
 AudioSource:
@@ -25687,6 +25689,8 @@ MonoBehaviour:
   ropeReached: 0
   ropeEjected: 0
   ropeHitting: 0
+  startColor: {r: 1, g: 0.31724137, b: 0.91967535, a: 1}
+  endColor: {r: 1, g: 1, b: 1, a: 1}
   rope: {fileID: 0}
 --- !u!4 &1760946169
 Transform:
@@ -25699,7 +25703,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2134688775}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &1760946170
 AudioSource:
@@ -26910,8 +26914,8 @@ Transform:
   m_Children:
   - {fileID: 1830003933}
   - {fileID: 551121879}
-  - {fileID: 1110664982}
   - {fileID: 1760946169}
+  - {fileID: 1110664982}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

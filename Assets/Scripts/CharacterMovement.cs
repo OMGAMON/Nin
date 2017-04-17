@@ -84,7 +84,7 @@ public class CharacterMovement : MonoBehaviour {
 
 	void thrust() {
 		if (thrusting) {
-			if (Time.time - thrustStartTime < 0.2f) {
+			if (Time.time - thrustStartTime < 0.2f) {//thrust for 0.2 seconds
 				transform.position = transform.position + Vector3.right * 4f * Time.fixedDeltaTime;
 			} else {
 				flame.Stop ();
@@ -130,7 +130,7 @@ public class CharacterMovement : MonoBehaviour {
 
 	void OnCollisionStay2D(Collision2D coll) {
 			if (coll.gameObject.tag == "Block") {
-				if (distanceToSteadyX > 0.1f) {//has enough offset (0.1f) to adjust position, prevent blockSpeed divide number near a zero
+				if (distanceToSteadyX > 0.3f) {//has enough offset (0.1f) to adjust position, prevent blockSpeed divide number near a zero
 					blockSpeed = staticBlockScript.blockSpeed;
 					transform.position = transform.position + Time.fixedDeltaTime * (blockSpeed / distanceToSteadyX + 0.02f) * (transform.position.x - steadyPoint.transform.position.x) * Vector3.left;
 				}
@@ -147,7 +147,7 @@ public class CharacterMovement : MonoBehaviour {
 
 	void backingAdjust() {
 			if (!ropeScript.ropeEjected) {
-				if (collisionCount == 0 && (transform.position.x - steadyPoint.transform.position.x) < -0.05f) {
+				if (collisionCount == 0 && (transform.position.x - steadyPoint.transform.position.x) < -0.2f) {//0.05f
 					if (!resetingPosition) {
 						distanceToSteadyX = Mathf.Abs (transform.position.x - steadyPoint.transform.position.x);
 						resetingPosition = true;

@@ -49,7 +49,7 @@ public class CharacterHealth : MonoBehaviour {
 				hitted = true;
 				health -= deductionShooting;//-20f
 				source.PlayOneShot(explosionClip, 3f);
-				rend.color = new Color (rend.color.r, rend.color.g, rend.color.b, rend.color.a - deductionShooting/100);//0.15
+				rend.color = new Color (rend.color.r, rend.color.g, rend.color.b, health/100);//0.15
 				explosion.Play ();
 				Invoke ("expStop", 1f);
 
